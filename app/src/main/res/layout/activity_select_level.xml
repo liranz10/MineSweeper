@@ -11,21 +11,18 @@
     android:weightSum="1"
     android:background="#9ec2ff">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="255dp"
+    <ImageView
+        android:layout_width="336dp"
         android:layout_height="wrap_content"
-        android:text="Select Difficulty"
-        android:layout_weight="0.22"
         android:gravity="center"
-        android:textSize="30dp"/>
+        android:src="@drawable/selectdifficulty"/>
 
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_easy"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="40dp"
             android:background="#9ec2ff"/>
         <ImageButton

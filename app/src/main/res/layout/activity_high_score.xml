@@ -24,9 +24,11 @@
 
         <TableRow android:gravity="center">
 
-           <ImageView android:src="@drawable/rank2"/>
-           <ImageView android:src="@drawable/time"/>
-           <ImageView android:src="@drawable/name"/>
+            <ImageView android:src="@drawable/rank2" />
+
+            <ImageView android:src="@drawable/time" />
+
+            <ImageView android:src="@drawable/name" />
 
         </TableRow>
 
