@@ -9,8 +9,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:weightSum="1"
-    android:background="#9ec2ff"
-    android:layoutDirection="ltr">
+    android:background="#9ec2ff">
     <ImageView
         android:layout_marginTop="90dp"
         android:layout_width="wrap_content"

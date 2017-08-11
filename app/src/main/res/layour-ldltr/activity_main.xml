@@ -33,25 +33,19 @@
         android:layout_height="wrap_content"
         android:src="@drawable/button_play"
         android:layout_marginBottom="40dp"
-        android:background="#9ec2ff"
-            android:id="@+id/play"/>
+        android:background="#9ec2ff"/>
         <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/high_scores"
         android:layout_marginBottom="40dp"
-        android:background="#9ec2ff"
-            android:id="@+id/high_score"/>
-
+        android:background="#9ec2ff"/>
         <ImageButton
-            android:id="@+id/exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_exit"
             android:layout_marginBottom="40dp"
-            android:background="#9ec2ff"
-            />
-
+            android:background="#9ec2ff"/>
 
     </LinearLayout>
 
