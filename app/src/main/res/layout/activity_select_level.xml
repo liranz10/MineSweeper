@@ -19,24 +19,27 @@
 
 
         <ImageButton
+            android:id="@+id/easy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_easy"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="40dp"
-            android:background="#9ec2ff"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
         <ImageButton
+            android:id="@+id/medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_medium"
             android:layout_marginBottom="40dp"
-            android:background="#9ec2ff"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
         <ImageButton
+            android:id="@+id/hard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/button_hard"
             android:layout_marginBottom="40dp"
-            android:background="#9ec2ff"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
 
 

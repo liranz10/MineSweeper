@@ -1,85 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.liran.minesweeper.GameActivity"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:weightSum="1"
     android:background="#9ec2ff"
-    android:layoutDirection="ltr">
+    android:gravity="center"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context="com.example.liran.minesweeper.GameActivity">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal"
-        android:layout_marginBottom="20dp">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginRight="30dp"
-        android:textSize="35dp"
-        android:text="000"
-        />
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/happy"
-        android:layout_gravity="center_vertical"/>
-    <TextView
-        android:layout_marginLeft="30dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textSize="35dp"
-        android:text="000"/>
+        android:weightSum="1">
+
+        <TextView
+            android:text="000"
+            android:textColor="#000"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:background="@drawable/score"
+            android:fontFamily="casual"
+            />
+
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/happy" />
+
+        <TextView
+            android:text="000"
+            android:textColor="#000"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="60dp"
+            android:background="@drawable/score"
+            android:fontFamily="casual"
+            />
     </LinearLayout>
 
+
+
+
     <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="5"
-        android:rowCount="5"
-        android:layout_marginBottom="15dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="5"
+            android:rowCount="5">
 
 
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
 
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
-        <Button android:layout_width="50dp"/>
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
 
-    </GridLayout>
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+            <ImageButton
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/buttonshape" />
+
+
+        </GridLayout>
+
+
     <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOn="Flag On"
-        android:textOff="Flag Off"
-        />
+        android:layout_marginTop="20dp"
+        android:id="@+id/toggleButton"
+        android:layout_width="78dp"
+        android:textSize="20dp"
+        android:layout_height="24dp"
+        android:background="@drawable/flag2"
+        android:gravity="bottom|right"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:layout_weight="0.20" />
 
 
 </LinearLayout>

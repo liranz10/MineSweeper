@@ -15,42 +15,43 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="378dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.17"
+        android:layout_height="66dp"
         android:src="@drawable/logo" />
 
     <LinearLayout
         android:layout_width="356dp"
         android:layout_height="280dp"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_marginTop="10dp"
-        android:weightSum="1"
-        android:layout_weight="0.88">
+        android:layout_weight="0.88"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/button_play"
-        android:layout_marginBottom="40dp"
-        android:background="#9ec2ff"
-            android:id="@+id/play"/>
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:baselineAlignBottom="false"
+            android:src="@drawable/button_play" />
+
         <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/high_scores"
-        android:layout_marginBottom="40dp"
-        android:background="#9ec2ff"
-            android:id="@+id/high_score"/>
+            android:id="@+id/high_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/high_scores" />
 
         <ImageButton
             android:id="@+id/exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/button_exit"
+            android:layout_width="149dp"
+            android:layout_height="53dp"
             android:layout_marginBottom="40dp"
-            android:background="#9ec2ff"
-            />
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/button_exit" />
 
 
     </LinearLayout>
@@ -58,10 +59,10 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="359dp"
-        android:layout_height="144dp"
+        android:layout_height="113dp"
         android:layout_marginBottom="40dp"
-        android:layout_weight="0.60"
-        android:src="@drawable/menupic" />
+        android:src="@drawable/menupic"
+        android:layout_weight="0.26" />
 </LinearLayout>
 
 
