@@ -59,6 +59,7 @@ public class MineField {
             randomCol = 0 + (int) (Math.random() * cols);
              if (gameGrid[randomRow][randomCol].getValue()!=Cell.MINE_VALUE) {
                  gameGrid[randomRow][randomCol] = new Cell(Cell.MINE_VALUE);
+                 adjustNeighboursValues(randomRow,randomCol);
                  i++;
              }
         }
@@ -66,17 +67,17 @@ public class MineField {
 
     private void adjustNeighboursValues(int row, int col){
         int i=1, j=1;
-        if (row == rows)
+        if (row == rows-1)
             i=-1;
-        if (col == cols)
+        if (col == cols-1)
             j=-1;
 
         gameGrid[row+i][col].increaseValue();
         gameGrid[row][col+j].increaseValue();
         gameGrid[row+i][col+j].increaseValue();
 
-        if(row == 0 || row==rows){
-            if (col != 0 && col!=cols){
+        if(row == 0 || row==rows-1){
+            if (col != 0 && col!=cols-1){
                 gameGrid[row][col-j].increaseValue();
                 gameGrid[row+i][col-j].increaseValue();
             }
@@ -85,7 +86,7 @@ public class MineField {
         else  {
             gameGrid[row-i][col].increaseValue();
             gameGrid[row-i][col+j].increaseValue();
-            if(col != 0 && col !=cols){
+            if(col != 0 && col !=cols-1){
                 gameGrid[row-i][col-j].increaseValue();
                 gameGrid[row][col-j].increaseValue();
                 gameGrid[row+i][col-j].increaseValue();
@@ -95,48 +96,48 @@ public class MineField {
 
     public void revealNeighbours(int row, int col){
         int i=1, j=1;
-        if (row == rows)
+        if (row == rows-1)
             i=-1;
-        if (col == cols)
+        if (col == cols-1)
             j=-1;
 
         reveal(row+i, col);
-        if (gameGrid[row+i][col].getValue() == 0)
+        if (gameGrid[row+i][col].getValue() == 0 && gameGrid[row+i][col].isCovered())
             revealNeighbours(row+i, col);
         reveal(row, col+j);
-        if (gameGrid[row][col+j].getValue() == 0)
+        if (gameGrid[row][col+j].getValue() == 0 && gameGrid[row][col+j].isCovered())
             revealNeighbours(row, col+j);
         reveal(row+i, col+j);
-        if (gameGrid[row+i][col+j].getValue() == 0)
+        if (gameGrid[row+i][col+j].getValue() == 0 && gameGrid[row+i][col+j].isCovered())
             revealNeighbours(row+i, col+j);
 
-        if(row == 0 || row==rows){
-            if (col != 0 && col!=cols){
+        if(row == 0 || row==rows-1){
+            if (col != 0 && col!=cols-1){
                 reveal(row, col-j);
-                if (gameGrid[row][col-j].getValue() == 0)
+                if (gameGrid[row][col-j].getValue() == 0 && gameGrid[row][col-j].isCovered())
                     revealNeighbours(row, col-j);
                 reveal(row+i, col-j);
-                if (gameGrid[row+i][col-j].getValue() == 0)
+                if (gameGrid[row+i][col-j].getValue() == 0 && gameGrid[row+i][col-j].isCovered())
                     revealNeighbours(row+i, col-j);
             }
 
         }
         else  {
             reveal(row-i, col);
-            if (gameGrid[row-i][col].getValue() == 0)
+            if (gameGrid[row-i][col].getValue() == 0 && gameGrid[row-i][col].isCovered())
                 revealNeighbours(row-i, col);
             reveal(row-i, col+j);
-            if (gameGrid[row-i][col+j].getValue() == 0)
+            if (gameGrid[row-i][col+j].getValue() == 0 && gameGrid[row-i][col+j].isCovered())
                 revealNeighbours(row-i, col+j);
-            if(col != 0 && col !=cols){
+            if(col != 0 && col !=cols-1){
                 reveal(row-i, col-j);
-                if (gameGrid[row-i][col-j].getValue() == 0)
+                if (gameGrid[row-i][col-j].getValue() == 0 && gameGrid[row-i][col-j].isCovered())
                     revealNeighbours(row-i, col-j);
                 reveal(row, col-j);
-                if (gameGrid[row][col-j].getValue() == 0)
+                if (gameGrid[row][col-j].getValue() == 0 && gameGrid[row][col-j].isCovered())
                     revealNeighbours(row, col-j);
                 reveal(row+i, col-j);
-                if (gameGrid[row+i][col-j].getValue() == 0)
+                if (gameGrid[row+i][col-j].getValue() == 0 && gameGrid[row+i][col-j].isCovered())
                     revealNeighbours(row+i, col-j);
             }
         }

@@ -19,20 +19,20 @@ public class SelectLevelActivity extends AppCompatActivity {
         findViewById(R.id.easy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(game);
                 GameActivity.gameManager = new GameManager(LevelConst.LEVEL.EASY);
+                startActivity(game);
             }});
         findViewById(R.id.medium).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(game);
                 GameActivity.gameManager = new GameManager(LevelConst.LEVEL.MEDIUM);
+                startActivity(game);
             }});
         findViewById(R.id.hard).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GameActivity.gameManager = new GameManager(LevelConst.LEVEL.HARD);
                 startActivity(game);
-                GameActivity.gameManager = new GameManager(LevelConst.LEVEL.MEDIUM);
             }});
     }
 }

@@ -51,7 +51,8 @@
             android:layout_height="53dp"
             android:layout_marginBottom="40dp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/button_exit" />
+            android:src="@drawable/button_exit"
+            />
 
 
     </LinearLayout>

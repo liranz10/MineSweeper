@@ -53,8 +53,10 @@ public class GameManager implements LevelConst{
             if (board.checkMine(row, col))
                 return false;
             board.reveal(row, col);
-            if (board.getCell(row, col).getValue()==0)
-                board.revealNeighbours(row, col);
+            if (board.getCell(row, col).getValue()==0) {
+             Thread neighbour = new Thread(new NeighboursThread(board,row,col));
+                neighbour.start();
+            }
 
         }
         return true;
