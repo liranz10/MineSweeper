@@ -15,8 +15,7 @@ public class Cell {
         this.covered=true;
     }
 
-    public int getValue() {
-        return value;
+    public int getValue() {return value;
     }
 
     public void increaseValue() {

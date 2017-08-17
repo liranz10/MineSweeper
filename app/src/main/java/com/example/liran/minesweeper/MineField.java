@@ -98,7 +98,7 @@ public class MineField {
         }
     }
 
-    public void revealNeighbours(int row, int col){
+    public void revealNeighbours(int row, int col) {
 //        int i=1, j=1;
 //        if (row == rows-1)
 //            i=-1;
@@ -145,7 +145,7 @@ public class MineField {
 //                    revealNeighbours(row+i, col-j);
 //            }
 //        }
-
+//
         int minX = (row <= 0 ? 0 : row - 1);
         int minY = (col <= 0 ? 0 : col - 1);
         int maxX = (row >= rows - 1 ? rows : row + 2);
@@ -163,7 +163,48 @@ public class MineField {
                 }
             }
         }
+
+
+//        if (row <0 || row == rows || col < 0 || col == cols)
+//            return;
+//            if(gameGrid[row][col].getValue()==0 && gameGrid[row][col].isCovered())
+//            {
+//                reveal(row,col);
+//                revealNeighbours( row - 1, col );
+//                revealNeighbours( row - 1, col - 1 );
+//                revealNeighbours( row, col - 1 );
+//                revealNeighbours( row + 1, col - 1 );
+//                revealNeighbours( row + 1, col );
+//                revealNeighbours( row + 1, col + 1 );
+//                revealNeighbours( row , col + 1 );
+//                revealNeighbours( row - 1, col + 1 );
+//            }
+//
+////            if( gameGrid[row][col].getValue()==Cell.MINE_VALUE )
+////                return;
+//
+//        if(gameGrid[row][col].getValue()>=0 && gameGrid[row][col].isCovered())
+//            {
+//                reveal(row, col);
+//                return;
+//            }
+//        }
+
+//        if (gameGrid[row][col].isCovered()) {
+//            gameGrid[row][col].setCovered(false);
+//            if (gameGrid[row][col].getValue() == 0) {
+//                for (int i = Math.max(row - 1, 0); i < rows && i <= row + 1; i++) {
+//                    for (int j = Math.max(col - 1, 0); j < cols && j <= col + 1; j++) {
+//                        revealNeighbours(i, j);
+//                    }
+//                }
+//            }
+//        }
     }
+
+
+
+
         
         
         
