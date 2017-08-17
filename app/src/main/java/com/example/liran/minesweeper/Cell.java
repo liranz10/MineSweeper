@@ -7,6 +7,7 @@ public class Cell {
     private boolean flagged;
     private boolean covered;
     public static final int MINE_VALUE = -1;
+
     public Cell(int value)
     {
         this.value=value;

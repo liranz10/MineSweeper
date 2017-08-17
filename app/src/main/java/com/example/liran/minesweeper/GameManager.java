@@ -5,9 +5,12 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.example.liran.minesweeper.LevelConst.LEVEL.EASY;
 
 public class GameManager implements LevelConst{
+
     private MineField board;
     private Timer time;
+    private HighScore highScore;
     private int mineLeft;
+
     public GameManager(LEVEL level){
         switch (level) {
             case EASY:
@@ -60,4 +63,6 @@ public class GameManager implements LevelConst{
     public MineField getBoard() {
         return board;
     }
+
+
 }
