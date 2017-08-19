@@ -1,8 +1,7 @@
 package com.example.liran.minesweeper;
 
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static com.example.liran.minesweeper.LevelConst.LEVEL.EASY;
+import android.content.Context;
 
 public class GameManager implements LevelConst{
 
@@ -10,8 +9,11 @@ public class GameManager implements LevelConst{
     private Timer time;
     private HighScore highScore;
     private int mineLeft;
-
+    private boolean firstMove;
+    private LEVEL level;
+    private boolean isGameOver;
     public GameManager(LEVEL level){
+        this.level = level;
         switch (level) {
             case EASY:
                 this.board = new MineField(EASY_ROWS, EASY_COLS, EASY_MINES);
@@ -25,47 +27,79 @@ public class GameManager implements LevelConst{
         }
         this.mineLeft=board.getMineNum();
         this.time=new Timer();
+        this.firstMove=true;
+        this.isGameOver = false;
+    }
 
+    public LEVEL getLevel() {
+        return level;
     }
 
     public boolean isWinning(){
         boolean isWon = true;
         for (int i=0; (i<board.getRows()) && isWon; i++){
             for (int j=0; (j<board.getCols()) && isWon; j++){
-                if (board.getCell(i,j).isCovered() || !board.getCell(i,j).isFlagged()){
+                if (board.getCell(i,j).isCovered() && !board.getCell(i,j).isFlagged()){
                     isWon = false;
                 }
             }
         }
-        if(mineLeft==0 && isWon)
+        if(mineLeft==0 && isWon) {
+            isGameOver = true;
             return true;
+        }
         else
             return false;
     }
 
     // return false if game over
     public boolean gameMove(int row, int col, boolean flag){
+        if (firstMove) {
+            time.setTimerOn(true);
+            this.firstMove=false;
+        }
         if (flag) {
-            board.flag(row, col);
+            board.flag(row, col,true);
             mineLeft--;
         }
         else{
-            if (board.checkMine(row, col))
+                if (board.getCell(row, col).isFlagged()) {
+                    board.getCell(row, col).setRemoveFlag(true);
+                    board.flag(row, col, false);
+                    mineLeft++;
+                    return true;
+            }
+            if (board.checkMine(row, col)){
+                isGameOver =true;
                 return false;
+            }
+
             board.reveal(row, col);
             if (board.getCell(row, col).getValue()==0) {
                 board.revealNeighbours(row, col);
-//             Thread neighbour = new Thread(new NeighboursThread(board,row,col));
-//                neighbour.start();
             }
 
         }
         return true;
     }
 
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
     public MineField getBoard() {
         return board;
     }
 
+    public int getMineLeft() {
+        return mineLeft;
+    }
 
+    public Timer getTime() {
+        return time;
+    }
+
+    public void setHighScore(String playerName, Context context) {
+        this.highScore= new HighScore(playerName,time.getTicks(),level,context);
+}
 }

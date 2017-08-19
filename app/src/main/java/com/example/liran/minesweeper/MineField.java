@@ -35,9 +35,9 @@ public class MineField {
     {
         gameGrid[row][col].setCovered(false);
     }
-    public void flag(int row, int col)
+    public void flag(int row, int col,boolean on_off)
     {
-        gameGrid[row][col].setFlagged(true);
+        gameGrid[row][col].setFlagged(on_off);
     }
     public boolean checkMine(int row, int col)
     {
@@ -99,53 +99,6 @@ public class MineField {
     }
 
     public void revealNeighbours(int row, int col) {
-//        int i=1, j=1;
-//        if (row == rows-1)
-//            i=-1;
-//        if (col == cols-1)
-//            j=-1;
-//
-//        reveal(row+i, col);
-//        if (gameGrid[row+i][col].getValue() == 0 && gameGrid[row+i][col].isCovered())
-//            revealNeighbours(row+i, col);
-//        reveal(row, col+j);
-//        if (gameGrid[row][col+j].getValue() == 0 && gameGrid[row][col+j].isCovered())
-//            revealNeighbours(row, col+j);
-//        reveal(row+i, col+j);
-//        if (gameGrid[row+i][col+j].getValue() == 0 && gameGrid[row+i][col+j].isCovered())
-//            revealNeighbours(row+i, col+j);
-//
-//        if(row == 0 || row==rows-1){
-//            if (col != 0 && col!=cols-1){
-//                reveal(row, col-j);
-//                if (gameGrid[row][col-j].getValue() == 0 && gameGrid[row][col-j].isCovered())
-//                    revealNeighbours(row, col-j);
-//                reveal(row+i, col-j);
-//                if (gameGrid[row+i][col-j].getValue() == 0 && gameGrid[row+i][col-j].isCovered())
-//                    revealNeighbours(row+i, col-j);
-//            }
-//
-//        }
-//        else  {
-//            reveal(row-i, col);
-//            if (gameGrid[row-i][col].getValue() == 0 && gameGrid[row-i][col].isCovered())
-//                revealNeighbours(row-i, col);
-//            reveal(row-i, col+j);
-//            if (gameGrid[row-i][col+j].getValue() == 0 && gameGrid[row-i][col+j].isCovered())
-//                revealNeighbours(row-i, col+j);
-//            if(col != 0 && col !=cols-1){
-//                reveal(row-i, col-j);
-//                if (gameGrid[row-i][col-j].getValue() == 0 && gameGrid[row-i][col-j].isCovered())
-//                    revealNeighbours(row-i, col-j);
-//                reveal(row, col-j);
-//                if (gameGrid[row][col-j].getValue() == 0 && gameGrid[row][col-j].isCovered())
-//                    revealNeighbours(row, col-j);
-//                reveal(row+i, col-j);
-//                if (gameGrid[row+i][col-j].getValue() == 0 && gameGrid[row+i][col-j].isCovered())
-//                    revealNeighbours(row+i, col-j);
-//            }
-//        }
-//
         int minX = (row <= 0 ? 0 : row - 1);
         int minY = (col <= 0 ? 0 : col - 1);
         int maxX = (row >= rows - 1 ? rows : row + 2);
@@ -154,7 +107,7 @@ public class MineField {
         // Loop over all surrounding cells
         for (int i = minX; i < maxX; i++) {
             for (int j = minY; j < maxY; j++) {
-                if ( gameGrid[i][j].getValue()!=Cell.MINE_VALUE && gameGrid[i][j].isCovered()) {
+                if (gameGrid[i][j].getValue() != Cell.MINE_VALUE && gameGrid[i][j].isCovered()) {
                     reveal(i, j);
                     if (gameGrid[i][j].getValue() == 0) {
                         // Call ourself recursively
@@ -163,53 +116,7 @@ public class MineField {
                 }
             }
         }
-
-
-//        if (row <0 || row == rows || col < 0 || col == cols)
-//            return;
-//            if(gameGrid[row][col].getValue()==0 && gameGrid[row][col].isCovered())
-//            {
-//                reveal(row,col);
-//                revealNeighbours( row - 1, col );
-//                revealNeighbours( row - 1, col - 1 );
-//                revealNeighbours( row, col - 1 );
-//                revealNeighbours( row + 1, col - 1 );
-//                revealNeighbours( row + 1, col );
-//                revealNeighbours( row + 1, col + 1 );
-//                revealNeighbours( row , col + 1 );
-//                revealNeighbours( row - 1, col + 1 );
-//            }
-//
-////            if( gameGrid[row][col].getValue()==Cell.MINE_VALUE )
-////                return;
-//
-//        if(gameGrid[row][col].getValue()>=0 && gameGrid[row][col].isCovered())
-//            {
-//                reveal(row, col);
-//                return;
-//            }
-//        }
-
-//        if (gameGrid[row][col].isCovered()) {
-//            gameGrid[row][col].setCovered(false);
-//            if (gameGrid[row][col].getValue() == 0) {
-//                for (int i = Math.max(row - 1, 0); i < rows && i <= row + 1; i++) {
-//                    for (int j = Math.max(col - 1, 0); j < cols && j <= col + 1; j++) {
-//                        revealNeighbours(i, j);
-//                    }
-//                }
-//            }
-//        }
     }
-
-
-
-
-        
-        
-        
-        
-        
 
 
     public Cell getCell(int row, int col){

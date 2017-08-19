@@ -6,6 +6,7 @@ public class Cell {
     private int value;
     private boolean flagged;
     private boolean covered;
+    private boolean removeFlag;
     public static final int MINE_VALUE = -1;
 
     public Cell(int value)
@@ -13,6 +14,7 @@ public class Cell {
         this.value=value;
         this.flagged=false;
         this.covered=true;
+        this.removeFlag=false;
     }
 
     public int getValue() {return value;
@@ -39,4 +41,11 @@ public class Cell {
         this.covered = covered;
     }
 
+    public boolean isRemoveFlag() {
+        return removeFlag;
+    }
+
+    public void setRemoveFlag(boolean removeFlag) {
+        this.removeFlag = removeFlag;
+    }
 }

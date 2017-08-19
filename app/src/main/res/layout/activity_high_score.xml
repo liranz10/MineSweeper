@@ -7,32 +7,72 @@
     android:layout_height="match_parent"
     tools:context="com.example.liran.minesweeper.HighScoreActivity"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center|top"
     android:weightSum="1"
     android:background="#9ec2ff"
     android:layoutDirection="ltr">
     <ImageView
-        android:layout_marginTop="90dp"
         android:layout_width="wrap_content"
         android:layout_height="74dp"
-        android:src="@drawable/high"/>
+        android:src="@drawable/high"
+        />
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <RadioButton
+        android:id="@+id/easytable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Easy"
+        android:fontFamily="casual" />
+        <RadioButton
+            android:id="@+id/mediumtable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Medium"
+            android:fontFamily="casual" />
+        <RadioButton
+            android:id="@+id/hardtable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hard"
+            android:fontFamily="casual"/>
+        </RadioGroup>
 
-    <TableLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
 
-        <TableRow android:gravity="center">
+<LinearLayout
+    android:id="@+id/Hard"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center|top"
+    android:orientation="horizontal">
 
-            <ImageView android:src="@drawable/rank2" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/rank2" />
 
-            <ImageView android:src="@drawable/time" />
+    <ImageView
 
-            <ImageView android:src="@drawable/name" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/time" />
 
-        </TableRow>
+    <ImageView
 
-    </TableLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/name" />
+</LinearLayout>
+ <TableLayout
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:id="@+id/scoretable"
+     >
+
+
+ </TableLayout>
+
 
 </LinearLayout>

@@ -1,36 +1,29 @@
 package com.example.liran.minesweeper;
 
-import android.util.Log;
 
-import static android.content.ContentValues.TAG;
 
-/**
- * Created by Liran on 16/08/2017.
- */
-
-public class Timer {
+public class Timer{
     private int ticks;
-    private static final int ONE_SECOND=1000;
+    private boolean isTimerOn;
+
     public Timer() {
         this.ticks = 0;
+        isTimerOn=false;
     }
 
-    private void tickEndlessly() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    tick();
-                    try {
-                        Thread.sleep(ONE_SECOND);
-                    } catch (InterruptedException exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        }).start();
+    public void tick() {
+        if(isTimerOn)
+            ticks++;
+        else
+            return;
+
     }
-    private void tick() {
-        ticks++;
+
+    public int getTicks() {
+        return ticks;
+    }
+
+    public void setTimerOn(boolean timerOn) {
+        isTimerOn = timerOn;
     }
 }

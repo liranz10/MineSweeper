@@ -20,7 +20,7 @@
         android:weightSum="1">
 
         <TextView
-            android:text="010"
+            android:id="@+id/mineNum"
             android:textColor="#000"
             android:textSize="30sp"
             android:gravity="center"
@@ -31,7 +31,7 @@
             />
 
         <ImageButton
-
+            android:id="@+id/smile"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_width="50dp"
@@ -40,7 +40,7 @@
             android:background="@drawable/happy" />
 
         <TextView
-            android:text="000"
+            android:id="@+id/time"
             android:textColor="#000"
             android:textSize="30sp"
             android:gravity="center"
@@ -63,9 +63,10 @@
     <ToggleButton
         android:layout_marginTop="20dp"
         android:id="@+id/toggleButton"
-        android:layout_width="78dp"
+        android:layout_width="60dp"
         android:textSize="20dp"
-        android:layout_height="24dp"
+        android:fontFamily="casual"
+        android:layout_height="35dp"
         android:background="@drawable/flag2"
         android:gravity="bottom|right"
         android:textOff="OFF"
