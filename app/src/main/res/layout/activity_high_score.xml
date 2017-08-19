@@ -19,7 +19,8 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/radiogroup">
         <RadioButton
         android:id="@+id/easytable"
         android:layout_width="match_parent"

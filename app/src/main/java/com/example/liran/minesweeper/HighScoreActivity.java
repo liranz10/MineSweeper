@@ -29,7 +29,7 @@ public class HighScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
         ArrayList<HighScore> scores =HighScore.load(this);
-        RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
+        RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
         showTable(scores);
 
     }
