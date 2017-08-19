@@ -17,7 +17,7 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 public class HighScore {
-
+    static int highScoreCounter = 0;
     private String playerName;
     private int score;
     private LevelConst.LEVEL level;
@@ -27,18 +27,23 @@ public class HighScore {
         this.playerName = playerName;
         this.score = score;
         this.level=level;
+        highScoreCounter++;
         save(context);
     }
 
     private void save(Context context){
         String jsonString = new Gson().toJson(this);
         SharedPreferences.Editor editor = context.getSharedPreferences("HighScoreTable", MODE_PRIVATE).edit();
-        editor.putString(HighScore.class.getSimpleName(), jsonString).apply();
+        editor.putString(highScoreCounter+"", jsonString).apply();
     }
 
     static ArrayList<HighScore> load(Context context) {
+
         ArrayList<HighScore> table= new ArrayList<>();
         SharedPreferences sp = context.getSharedPreferences("HighScoreTable", MODE_PRIVATE);
+//        to delete from share preferences
+//        SharedPreferences.Editor editor = context.getSharedPreferences("HighScoreTable", MODE_PRIVATE).edit();
+//        sp.edit().remove(highScoreCounter+"").apply();
         Map<String,?>  scores = sp.getAll();
         for (Map.Entry<String, ?> entry : scores.entrySet()){
             String json = entry.getValue().toString();
