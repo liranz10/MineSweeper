@@ -44,12 +44,24 @@ public class GameManager implements LevelConst{
                 }
             }
         }
-        if(mineLeft==0 && isWon) {
+        if((mineLeft==0 && isWon) || checkAllRevealed()) {
             isGameOver = true;
             return true;
         }
         else
             return false;
+    }
+
+    //Check if all the non mined is revealed
+    private boolean checkAllRevealed(){
+        for (int i=0; i<board.getRows(); i++){
+            for (int j=0; j<board.getCols(); j++){
+                if ((board.getCell(i,j).getValue() != board.getCell(i,j).MINE_VALUE) && (board.getCell(i,j).isCovered())){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     // return false if game over
@@ -59,8 +71,10 @@ public class GameManager implements LevelConst{
             this.firstMove=false;
         }
         if (flag) {
-            board.flag(row, col,true);
-            mineLeft--;
+            if(!board.getCell(row, col).isFlagged() && board.getCell(row, col).isCovered()) {
+                board.flag(row, col, true);
+                mineLeft--;
+            }
         }
         else{
                 if (board.getCell(row, col).isFlagged()) {

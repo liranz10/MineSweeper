@@ -17,27 +17,30 @@
         android:src="@drawable/high"
         />
         <RadioGroup
+            android:id="@+id/group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/radiogroup">
+            android:orientation="horizontal">
         <RadioButton
         android:id="@+id/easytable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Easy"
+        android:textSize="20dp"
         android:fontFamily="casual" />
         <RadioButton
             android:id="@+id/mediumtable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Medium"
+            android:textSize="20dp"
             android:fontFamily="casual" />
         <RadioButton
             android:id="@+id/hardtable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hard"
+            android:textSize="20dp"
             android:fontFamily="casual"/>
         </RadioGroup>
 
@@ -69,6 +72,7 @@
  <TableLayout
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
+     android:layout_marginLeft="50dp"
      android:id="@+id/scoretable"
      >
 

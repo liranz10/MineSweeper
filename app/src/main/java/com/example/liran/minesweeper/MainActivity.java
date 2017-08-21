@@ -1,6 +1,7 @@
 package com.example.liran.minesweeper;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
 
         final Intent selectlevel = new Intent(this,SelectLevelActivity.class);

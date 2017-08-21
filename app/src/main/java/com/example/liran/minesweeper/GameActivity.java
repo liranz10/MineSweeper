@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -41,6 +42,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_game);
         createNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
         mineLeft = (TextView)findViewById(R.id.mineNum);
