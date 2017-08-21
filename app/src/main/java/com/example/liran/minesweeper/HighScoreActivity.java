@@ -38,6 +38,8 @@ public class HighScoreActivity extends AppCompatActivity {
         scores =HighScore.load(this);
         tl = (TableLayout) findViewById(R.id.scoretable);
         radioGroup = (RadioGroup)findViewById(R.id.group);
+        radioGroup.check(R.id.easytable);
+        showTable(scores, LevelConst.LEVEL.EASY);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 
             @Override
@@ -99,7 +101,8 @@ public class HighScoreActivity extends AppCompatActivity {
 
                     rank.setText((rankVal++) + "");
                     name.setText(e.getPlayerName());
-                    time.setText(e.getScore() + "");
+                    name.setGravity(Gravity.LEFT);
+                    time.setText("  "+e.getScore() + "");
 
                     rank.setTextSize(20);
                     time.setTextSize(20);

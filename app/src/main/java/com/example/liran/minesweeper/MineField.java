@@ -107,7 +107,7 @@ public class MineField {
         // Loop over all surrounding cells
         for (int i = minX; i < maxX; i++) {
             for (int j = minY; j < maxY; j++) {
-                if (gameGrid[i][j].getValue() != Cell.MINE_VALUE && gameGrid[i][j].isCovered()) {
+                if (gameGrid[i][j].getValue() != Cell.MINE_VALUE && gameGrid[i][j].isCovered() && !gameGrid[i][j].isFlagged()) {
                     reveal(i, j);
                     if (gameGrid[i][j].getValue() == 0) {
                         // Call ourself recursively
