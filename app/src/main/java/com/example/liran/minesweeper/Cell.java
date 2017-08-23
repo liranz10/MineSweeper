@@ -9,6 +9,7 @@ public class Cell {
     private boolean removeFlag;
     public static final int MINE_VALUE = -1;
 
+    //initialize cell, not flagged, covered(not revealed-'pressed")
     public Cell(int value)
     {
         this.value=value;

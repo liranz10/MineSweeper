@@ -2,23 +2,11 @@ package com.example.liran.minesweeper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 class HighScore {
@@ -31,7 +19,6 @@ class HighScore {
         this.playerName = playerName;
         this.score = score;
         this.level=level;
-
         this.highScoreCounter = load(context).size();
         save(context);
     }

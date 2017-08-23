@@ -1,8 +1,7 @@
 package com.example.liran.minesweeper;
-
-
 import android.content.Context;
 
+//Game Manager Class, refers to all SINGLE game logic
 public class GameManager implements LevelConst{
 
     private MineField board;
@@ -12,6 +11,8 @@ public class GameManager implements LevelConst{
     private boolean firstMove;
     private LEVEL level;
     private boolean isGameOver;
+
+    //initialize game grid by level
     public GameManager(LEVEL level){
         this.level = level;
         switch (level) {
@@ -31,10 +32,12 @@ public class GameManager implements LevelConst{
         this.isGameOver = false;
     }
 
+    //the game level enum
     public LEVEL getLevel() {
         return level;
     }
 
+    //checks if the single game is in winning state - all not mined cells were revealed
     public boolean isWinning(){
         boolean isWon = true;
         for (int i=0; (i<board.getRows()) && isWon; i++){
@@ -56,7 +59,7 @@ public class GameManager implements LevelConst{
     private boolean checkAllRevealed(){
         for (int i=0; i<board.getRows(); i++){
             for (int j=0; j<board.getCols(); j++){
-                if ((board.getCell(i,j).getValue() != board.getCell(i,j).MINE_VALUE) && (board.getCell(i,j).isCovered())){
+                if (!(board.checkMine(i,j)) && (board.getCell(i,j).isCovered())){
                     return false;
                 }
             }
@@ -67,9 +70,12 @@ public class GameManager implements LevelConst{
     // return false if game over
     public boolean gameMove(int row, int col, boolean flag){
         if (firstMove) {
+            //init timer - turn on ticks
             time.setTimerOn(true);
+            //turn off the first game move flag
             this.firstMove=false;
         }
+        //set a flag on the chosen cell
         if (flag) {
             if(!board.getCell(row, col).isFlagged() && board.getCell(row, col).isCovered()) {
                 board.flag(row, col, true);
@@ -113,6 +119,7 @@ public class GameManager implements LevelConst{
         return time;
     }
 
+    //sets the game high score record - player name, ticks from the timer, and the level
     public void setHighScore(String playerName, Context context) {
         this.highScore= new HighScore(playerName,time.getTicks(),level,context);
 }

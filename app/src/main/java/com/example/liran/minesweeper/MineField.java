@@ -1,8 +1,6 @@
 package com.example.liran.minesweeper;
 
-import static android.R.attr.width;
-import static android.R.attr.x;
-import static android.R.attr.y;
+
 
 public class MineField {
 
@@ -11,6 +9,7 @@ public class MineField {
     private int cols;
     private int mineNum;
 
+    //Constructor - initialize the grid values and the mines positions
     public MineField(int rows, int cols, int mineNum) {
         this.rows = rows;
         this.cols = cols;
@@ -31,14 +30,20 @@ public class MineField {
     public int getMineNum() {
         return mineNum;
     }
+
+    //reveal the cell
     public void reveal(int row, int col)
     {
         gameGrid[row][col].setCovered(false);
     }
+
+    //flag the cell
     public void flag(int row, int col,boolean on_off)
     {
         gameGrid[row][col].setFlagged(on_off);
     }
+
+    //checks if the cell is mined
     public boolean checkMine(int row, int col)
     {
         if (gameGrid[row][col].getValue()== Cell.MINE_VALUE)
@@ -47,20 +52,22 @@ public class MineField {
             return false;
     }
 
+    //initialize game grid , cell values to zero
     private void initGameGrid(){
         for (int i=0 ; i < rows ; i++)
             for (int j=0 ; j < cols ; j++)
                 gameGrid[i][j]=new Cell(0);
     }
 
+    //randomize the mines positions
     private void generateMines()
     {
         int randomRow;
         int randomCol;
         int i=0;
         while (i < mineNum) {
-            randomRow = 0 + (int) (Math.random() * rows);
-            randomCol = 0 + (int) (Math.random() * cols);
+            randomRow =  (int) (Math.random() * rows);
+            randomCol =  (int) (Math.random() * cols);
              if (gameGrid[randomRow][randomCol].getValue()!=Cell.MINE_VALUE) {
                  gameGrid[randomRow][randomCol] = new Cell(Cell.MINE_VALUE);
                  adjustNeighboursValues(randomRow,randomCol);
@@ -69,27 +76,31 @@ public class MineField {
         }
     }
 
+    //adjusting mined cell neighbours values
     private void adjustNeighboursValues(int row, int col){
         int i=1, j=1;
+        //last row
         if (row == rows-1)
             i=-1;
+        //last column
         if (col == cols-1)
             j=-1;
-
+        //left,right,and bottom left neighbours
         gameGrid[row+i][col].increaseValue();
         gameGrid[row][col+j].increaseValue();
         gameGrid[row+i][col+j].increaseValue();
-
+        //first or last row
         if(row == 0 || row==rows-1){
             if (col != 0 && col!=cols-1){
                 gameGrid[row][col-j].increaseValue();
                 gameGrid[row+i][col-j].increaseValue();
             }
-
         }
+        //middle rows
         else  {
             gameGrid[row-i][col].increaseValue();
             gameGrid[row-i][col+j].increaseValue();
+            //first or last column
             if(col != 0 && col !=cols-1){
                 gameGrid[row-i][col-j].increaseValue();
                 gameGrid[row][col-j].increaseValue();
@@ -98,19 +109,21 @@ public class MineField {
         }
     }
 
+    //recursive function to reveal the neighbours of cell that was pressed
     public void revealNeighbours(int row, int col) {
         int minX = (row <= 0 ? 0 : row - 1);
         int minY = (col <= 0 ? 0 : col - 1);
         int maxX = (row >= rows - 1 ? rows : row + 2);
         int maxY = (col >= cols - 1 ? cols : col + 2);
 
-        // Loop over all surrounding cells
+        // loop over all surrounding cells
         for (int i = minX; i < maxX; i++) {
             for (int j = minY; j < maxY; j++) {
+                //checking id the cell is not MINED, REVEALED already  or FLAGGED
                 if (gameGrid[i][j].getValue() != Cell.MINE_VALUE && gameGrid[i][j].isCovered() && !gameGrid[i][j].isFlagged()) {
                     reveal(i, j);
                     if (gameGrid[i][j].getValue() == 0) {
-                        // Call ourself recursively
+                        // call recursively
                         revealNeighbours(i, j);
                     }
                 }

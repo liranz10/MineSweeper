@@ -1,83 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.liran.minesweeper.HighScoreActivity"
-    android:orientation="vertical"
-    android:gravity="center|top"
-    android:weightSum="1"
     android:background="#9ec2ff"
-    android:layoutDirection="ltr">
+    android:gravity="center|top"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context="com.example.liran.minesweeper.HighScoreActivity">
+
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="74dp"
-        android:src="@drawable/high"
-        />
-        <RadioGroup
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <RadioButton
-        android:id="@+id/easytable"
-        android:layout_width="match_parent"
+        android:layout_height="74sp"
+        android:layout_marginTop="30sp"
+        android:src="@drawable/high" />
+
+    <RadioGroup
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Easy"
-        android:textSize="20dp"
-        android:fontFamily="casual" />
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/easytable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:text="@string/easy"
+            android:textSize="20sp" />
+
         <RadioButton
             android:id="@+id/mediumtable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Medium"
-            android:textSize="20dp"
-            android:fontFamily="casual" />
+            android:fontFamily="casual"
+            android:text="@string/medium"
+            android:textSize="20sp" />
+
         <RadioButton
             android:id="@+id/hardtable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hard"
-            android:textSize="20dp"
-            android:fontFamily="casual"/>
-        </RadioGroup>
+            android:fontFamily="casual"
+            android:text="@string/hard"
+            android:textSize="20sp" />
+    </RadioGroup>
 
 
-<LinearLayout
-    android:id="@+id/Hard"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center|top"
-    android:orientation="horizontal">
-
-    <ImageView
+    <LinearLayout
+        android:id="@+id/Hard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rank2" />
+        android:gravity="center|top"
+        android:orientation="horizontal">
 
-    <ImageView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/rank2" />
 
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/time" />
+
+        <ImageView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/name" />
+    </LinearLayout>
+
+    <TableLayout
+        android:id="@+id/scoretable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/time" />
-
-    <ImageView
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/name" />
-</LinearLayout>
- <TableLayout
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_marginLeft="50dp"
-     android:id="@+id/scoretable"
-     >
+        android:layout_marginStart="50sp">
 
 
- </TableLayout>
+    </TableLayout>
 
 
 </LinearLayout>

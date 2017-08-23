@@ -8,6 +8,7 @@ import android.view.View;
 
 import static com.example.liran.minesweeper.R.layout.activity_game;
 
+//Select Level Activity - UI for the player to pick his desired difficulty
 public class SelectLevelActivity extends AppCompatActivity {
 
     @Override
@@ -18,6 +19,7 @@ public class SelectLevelActivity extends AppCompatActivity {
 
         final Intent game = new Intent(this, GameActivity.class);
 
+        //initialize new single game(game manager - logic) by the selected difficulty  and starts the game activity
         findViewById(R.id.easy).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

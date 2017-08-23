@@ -1,9 +1,6 @@
 package com.example.liran.minesweeper;
 
-/**
- * Created by Liran on 16/08/2017.
- */
-
+//Levels params constants
 public interface LevelConst {
     static final int EASY_ROWS = 10;
     static final int EASY_COLS = 10;

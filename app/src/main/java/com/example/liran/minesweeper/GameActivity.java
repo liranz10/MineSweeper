@@ -1,53 +1,47 @@
 package com.example.liran.minesweeper;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatImageButton;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import static com.example.liran.minesweeper.R.id.grid;
 
-import static android.R.attr.value;
-import static android.R.id.message;
-import static android.R.transition.move;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
-
+//Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
 public class GameActivity extends AppCompatActivity {
     static GameManager gameManager;
-    private GridLayout gameGrid;
+
     private MineSweeperButton[] buttons;
     private TextView mineLeft;
     private TextView timeView;
     private Thread timerThread;
     private ImageButton smileButton;
-    //remove
-    private final String TAG = "sapir";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_game);
-        createNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
+        //create new grid layout for the game grid
+        setNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
+        //mine left view
         mineLeft = (TextView)findViewById(R.id.mineNum);
         mineLeft.setText(gameManager.getMineLeft()+"");
+        //time view
         timeView=(TextView) findViewById(R.id.time);
+        //new game button
         smileButton = (ImageButton)findViewById(R.id.smile);
         newGameButton();
     }
@@ -55,37 +49,41 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //checking if the game is not over on resume and starts timer
         if (!gameManager.isGameOver())
-            tickOnAnonymousThreadForever();
+            tickOnTimerThreadForever();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        //stop timer
         timerThread.interrupt();
     }
 
 
-    private GridLayout createNewGrid(final int colsNum, int rowsNum) {
+    private void setNewGrid(final int colsNum, int rowsNum) {
         buttons = new  MineSweeperButton[rowsNum*colsNum];
-       ViewGroup.LayoutParams gridLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        GridLayout gridLayout = (GridLayout)findViewById(R.id.grid);
-        gridLayout.removeAllViews();
-        gridLayout.setColumnCount(colsNum);
-        gridLayout.setRowCount(rowsNum);
+        ViewGroup.LayoutParams gridLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        GridLayout gameGrid = (GridLayout)findViewById(grid);
+        //set new grid params
+        gameGrid.removeAllViews();
+        gameGrid.setColumnCount(colsNum);
+        gameGrid.setRowCount(rowsNum);
 
         // Programmatically create the buttons layout
         for (int row = 0; row < rowsNum; row++) {
             for (int column = 0; column < colsNum; column++) {
 
                 final MineSweeperButton btn = new MineSweeperButton(this,row,column);
-                if (rowsNum>5) {
-                    btn.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
+                //small buttons for easy and medium level
+                if (rowsNum > LevelConst.HARD_ROWS) {
+                    btn.setLayoutParams(new LinearLayout.LayoutParams(getResources().getInteger(R.integer.button_small_size), getResources().getInteger(R.integer.button_small_size)));
                     btn.setBackgroundResource(R.drawable.buttonshapesmall);
                 }
                 else{
-                    btn.setLayoutParams(new LinearLayout.LayoutParams(170, 170));
+                    btn.setLayoutParams(new LinearLayout.LayoutParams(getResources().getInteger(R.integer.button_big_size), getResources().getInteger(R.integer.button_big_size)));
                     btn.setBackgroundResource(R.drawable.buttonshape);
                 }
 
@@ -93,46 +91,55 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                        // gets all status changes resolved by the game move
                         boolean isMine = !gameManager.gameMove(btn.getRow(),btn.getCol(),getFlagStatus());
                         boolean isFlagged = gameManager.getBoard().getCell(btn.getRow(),btn.getCol()).isFlagged();
                         int cellValue = gameManager.getBoard().getCell(btn.getRow(),btn.getCol()).getValue();
                         boolean removeFlag = gameManager.getBoard().getCell(btn.getRow(),btn.getCol()).isRemoveFlag();
+                        //view the changes on the game button
                         btn.setPressed(isFlagged,isMine,removeFlag,cellValue,colsNum);
                         if(isMine) {
                             showAllMines(colsNum);
                             disableButtons(colsNum);
+                            //stop timer
                             timerThread.interrupt();
+                            //sets new game button to game over image
                             smileButton.setBackgroundResource(R.drawable.gameover);
                         }
                         else if (gameManager.isWinning()){
+                            //stop timer
                             timerThread.interrupt();
+                            //sets new game button to game win image
                             smileButton.setBackgroundResource(R.drawable.win);
+                            //enter name
                             winDialog();
                         }
+                        //show all reveald cells resulted from the click
                         showAllRevealed(colsNum);
+                        //update mine left view
                         mineLeft.setText(gameManager.getMineLeft()+"");
                     }
                 });
                 buttons[row + column * colsNum] = btn;
-                gridLayout.addView(btn);
+                gameGrid.addView(btn);
             }
         }
 
-        return gridLayout;
     }
 
 
-
+    //view all mines to player if player pressed mined cell
     private void showAllMines(int colsNum){
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
-                if (gameManager.getBoard().getCell(row, column).getValue() == Cell.MINE_VALUE) {
+                if (gameManager.getBoard().checkMine(row, column)) {
                     buttons[row + column * colsNum].setPressed(false,true,false,Cell.MINE_VALUE,colsNum);
                 }
             }
         }
     }
 
+    //view all revealed cells resulted from the last game move
     private void showAllRevealed(int colsNum){
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
@@ -142,37 +149,47 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
+
+    //get toggle button status - flag on/off
     private boolean getFlagStatus(){
         ToggleButton flagStatus = (ToggleButton)findViewById(R.id.toggleButton);
         return flagStatus.isChecked();
     }
 
+    //disable al game grid buttons
     private void disableButtons(int colsNum){
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++)
                     buttons[row + column * colsNum].setClickable(false);
             }
     }
-
+    //start new game button on click
     private void newGameButton(){
 
         smileButton.setOnClickListener((new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
+                //gets current game level
                 LevelConst.LEVEL level = gameManager.getLevel();
+                // starts new single game logic
                 gameManager = new GameManager(level);
-                createNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
+                //restart grid
+                setNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
+                //restart mine left view
                 mineLeft.setText(gameManager.getMineLeft()+"");
+                //stop and start new timer
                 timerThread.interrupt();
-                tickOnAnonymousThreadForever();
+                tickOnTimerThreadForever();
+                //set new game button back to default
                 smileButton.setBackgroundResource(R.drawable.happy);
             }
         }));
 
     }
 
-    private void tickOnAnonymousThreadForever() {
+    // Create new timer in background thread
+    private void tickOnTimerThreadForever() {
         timerThread = new Thread() {
             @Override
             public void run() {
@@ -181,11 +198,13 @@ public class GameActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                // increase ticks
                                 gameManager.getTime().tick();
                                 timeView.setText(gameManager.getTime().getTicks() + "");
                             }
                         });
-                        Thread.sleep(1000);
+                        // delay for 1 second
+                        Thread.sleep(getResources().getInteger(R.integer.one_second));
                     }
                 } catch (InterruptedException e) {
                 }
@@ -194,6 +213,7 @@ public class GameActivity extends AppCompatActivity {
         timerThread.start();
     }
 
+    //presents a win dialog to the player - enter name
     private void winDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -221,25 +241,23 @@ public class GameActivity extends AppCompatActivity {
         });
 
         builder.show();
-
     }
-
-
-
-
 }
-
+    //Mine Sweeper Button inner class
      class MineSweeperButton extends AppCompatButton{
+
          private int row;
          private int col;
          private Typeface face;
+
          public MineSweeperButton(Context context,int row,int col) {
              super(context);
              this.row=row;
              this.col=col;
-             face = Typeface.createFromAsset(context.getAssets(), "fonts/ComingSoon.ttf");
+             face = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.number_font));
          }
-         public void settext(int value){
+         //set color by value
+         public void setButtonText(int value){
              switch (value){
                  case 1:
                      this.setTextColor(Color.BLUE);
@@ -270,39 +288,47 @@ public class GameActivity extends AppCompatActivity {
 
             if (value != 0)
              this.setText(value+"");
+             //set font style
              this.setTypeface(face);
 
          }
+
+         //pressed button - changes the button view by the flags and params
+         //changes button status according to the grid(level) size
          public void setPressed(boolean flag,boolean mine,boolean removeFlag,int value,int cols){
+             //flagged button
              if (flag) {
-                 if (cols > 5)
+                 if (cols > LevelConst.HARD_ROWS)
                      this.setBackgroundResource(R.drawable.buttonshapesmallflag);
                  else
                      this.setBackgroundResource(R.drawable.buttonflag);
              }
+             //mined button
              else if(mine) {
-                 if(cols>5)
+                 if(cols>LevelConst.HARD_ROWS)
                  this.setBackgroundResource(R.drawable.buttonshapesmallmined);
                  else
                      this.setBackgroundResource(R.drawable.buttonmined);
              }
+             //remove flag from button
              else if(removeFlag){
-                 if(cols>5)
+                 if(cols>LevelConst.HARD_ROWS)
                      this.setBackgroundResource(R.drawable.buttonshapesmall);
                  else
                      this.setBackgroundResource(R.drawable.buttonshape);
              }
+             //reveal button
              else{
-                 if(cols>5)
+                 if(cols>LevelConst.HARD_ROWS)
                      this.setBackgroundResource(R.drawable.buttonshapesmallpressed);
                  else
                      this.setBackgroundResource(R.drawable.buttonpressed);
 
-                 if (cols>5)
-                     this.setTextSize(14);
+                 if (cols>LevelConst.HARD_ROWS)
+                     this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_small_font_size));
                  else
-                     this.setTextSize(24);
-                 settext(value);
+                     this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_big_font_size));
+                 setButtonText(value);
              }
          }
 

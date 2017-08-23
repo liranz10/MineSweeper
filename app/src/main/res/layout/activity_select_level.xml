@@ -1,47 +1,47 @@
 <LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.liran.minesweeper.SelectLevelActivity"
-    android:orientation="vertical"
+    android:background="#9ec2ff"
     android:gravity="center"
+    android:orientation="vertical"
     android:weightSum="1"
-    android:background="#9ec2ff">
+    tools:context="com.example.liran.minesweeper.SelectLevelActivity">
 
     <ImageView
-        android:layout_width="336dp"
+        android:layout_width="336sp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:src="@drawable/selectdifficulty"/>
+        android:src="@drawable/selectdifficulty" />
 
 
-        <ImageButton
-            android:id="@+id/easy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/button_easy"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="40dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"/>
-        <ImageButton
-            android:id="@+id/medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/button_medium"
-            android:layout_marginBottom="40dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"/>
-        <ImageButton
-            android:id="@+id/hard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/button_hard"
-            android:layout_marginBottom="40dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+    <ImageButton
+        android:id="@+id/easy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40sp"
+        android:layout_marginTop="30sp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/button_easy" />
 
+    <ImageButton
+        android:id="@+id/medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40sp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/button_medium" />
 
+    <ImageButton
+        android:id="@+id/hard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40sp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/button_hard" />
 
 
 </LinearLayout>

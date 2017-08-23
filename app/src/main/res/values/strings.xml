@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MineSweeper</string>
+    <string name="number_font">fonts/ComingSoon.ttf</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+    <integer name="button_small_size">100</integer>
+    <integer name="button_big_size">170</integer>
+    <integer name="button_big_font_size">24</integer>
+    <integer name="button_small_font_size">14</integer>
+    <integer name="one_second">1000</integer>
 </resources>

@@ -2,26 +2,26 @@
 <LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.liran.minesweeper.MainActivity"
-    android:orientation="vertical"
+    android:background="#9ec2ff"
     android:gravity="center"
+    android:orientation="vertical"
     android:weightSum="1"
-    android:background="#9ec2ff">
+    tools:context="com.example.liran.minesweeper.MainActivity">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="378dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="378sp"
+        android:layout_height="66sp"
+        android:layout_marginTop="50sp"
         android:src="@drawable/black" />
 
     <LinearLayout
-        android:layout_width="356dp"
-        android:layout_height="280dp"
+        android:layout_width="356sp"
+        android:layout_height="280sp"
 
         android:layout_weight="0.88"
         android:clickable="true"
@@ -33,7 +33,7 @@
             android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="40sp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:baselineAlignBottom="false"
             android:src="@drawable/button_play" />
@@ -42,29 +42,28 @@
             android:id="@+id/high_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="40sp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/high_scores" />
 
         <ImageButton
             android:id="@+id/exit"
-            android:layout_width="149dp"
-            android:layout_height="53dp"
-            android:layout_marginBottom="40dp"
+            android:layout_width="149sp"
+            android:layout_height="53sp"
+            android:layout_marginBottom="3sp"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/button_exit"
-            />
+            android:src="@drawable/button_exit" />
 
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="359dp"
-        android:layout_height="113dp"
-        android:layout_marginBottom="40dp"
-        android:src="@drawable/menupic"
-        android:layout_weight="0.26" />
+        android:layout_width="359sp"
+        android:layout_height="113sp"
+        android:layout_marginBottom="40sp"
+        android:layout_weight="0.26"
+        android:src="@drawable/menupic" />
 </LinearLayout>
 
 
