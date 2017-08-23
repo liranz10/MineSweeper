@@ -16,7 +16,7 @@
         android:id="@+id/imageView"
         android:layout_width="378sp"
         android:layout_height="66sp"
-        android:layout_marginTop="50sp"
+        android:layout_marginTop="60sp"
         android:src="@drawable/black" />
 
     <LinearLayout

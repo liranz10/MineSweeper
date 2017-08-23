@@ -221,7 +221,7 @@ public class GameActivity extends AppCompatActivity {
 
         // Set up the input
         final EditText input = new EditText(this);
-        input.setHint("Enter Name");
+        input.setHint("Enter Your Name");
         // Specify the type of input expected;
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
