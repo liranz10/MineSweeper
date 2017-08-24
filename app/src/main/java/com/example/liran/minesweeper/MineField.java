@@ -1,9 +1,7 @@
 package com.example.liran.minesweeper;
 
-
-
+// Mine field class - the game board
 public class MineField {
-
     private Cell[][] gameGrid;
     private int rows;
     private int cols;
@@ -44,8 +42,7 @@ public class MineField {
     }
 
     //checks if the cell is mined
-    public boolean checkMine(int row, int col)
-    {
+    public boolean checkMine(int row, int col) {
         if (gameGrid[row][col].getValue()== Cell.MINE_VALUE)
             return true;
         else
@@ -60,15 +57,14 @@ public class MineField {
     }
 
     //randomize the mines positions
-    private void generateMines()
-    {
+    private void generateMines() {
         int randomRow;
         int randomCol;
         int i=0;
         while (i < mineNum) {
             randomRow =  (int) (Math.random() * rows);
             randomCol =  (int) (Math.random() * cols);
-             if (gameGrid[randomRow][randomCol].getValue()!=Cell.MINE_VALUE) {
+             if (!checkMine(randomRow,randomCol)) {
                  gameGrid[randomRow][randomCol] = new Cell(Cell.MINE_VALUE);
                  adjustNeighboursValues(randomRow,randomCol);
                  i++;
@@ -79,16 +75,20 @@ public class MineField {
     //adjusting mined cell neighbours values
     private void adjustNeighboursValues(int row, int col){
         int i=1, j=1;
+
         //last row
         if (row == rows-1)
             i=-1;
+
         //last column
         if (col == cols-1)
             j=-1;
+
         //left,right,and bottom left neighbours
         gameGrid[row+i][col].increaseValue();
         gameGrid[row][col+j].increaseValue();
         gameGrid[row+i][col+j].increaseValue();
+
         //first or last row
         if(row == 0 || row==rows-1){
             if (col != 0 && col!=cols-1){
@@ -96,10 +96,12 @@ public class MineField {
                 gameGrid[row+i][col-j].increaseValue();
             }
         }
+
         //middle rows
         else  {
             gameGrid[row-i][col].increaseValue();
             gameGrid[row-i][col+j].increaseValue();
+
             //first or last column
             if(col != 0 && col !=cols-1){
                 gameGrid[row-i][col-j].increaseValue();
@@ -120,7 +122,7 @@ public class MineField {
         for (int i = minX; i < maxX; i++) {
             for (int j = minY; j < maxY; j++) {
                 //checking id the cell is not MINED, REVEALED already  or FLAGGED
-                if (gameGrid[i][j].getValue() != Cell.MINE_VALUE && gameGrid[i][j].isCovered() && !gameGrid[i][j].isFlagged()) {
+                if (!checkMine(i,j) && gameGrid[i][j].isCovered() && !gameGrid[i][j].isFlagged()) {
                     reveal(i, j);
                     if (gameGrid[i][j].getValue() == 0) {
                         // call recursively
@@ -131,9 +133,7 @@ public class MineField {
         }
     }
 
-
     public Cell getCell(int row, int col){
         return gameGrid[row][col];
     }
-
 }

@@ -1,7 +1,7 @@
 package com.example.liran.minesweeper;
+
 //Game Time Class
 public class Timer{
-
     private int ticks;
     private boolean isTimerOn;
 
@@ -17,7 +17,6 @@ public class Timer{
             ticks++;
         else
             return;
-
     }
 
     public int getTicks() {

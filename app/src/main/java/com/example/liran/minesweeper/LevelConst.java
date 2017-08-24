@@ -12,5 +12,4 @@ public interface LevelConst {
     static final int HARD_COLS = 5;
     static final int HARD_MINES = 10;
     static  enum LEVEL {EASY,MEDIUM,HARD};
-
 }

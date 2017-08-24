@@ -3,7 +3,6 @@ import android.content.Context;
 
 //Game Manager Class, refers to all SINGLE game logic
 public class GameManager implements LevelConst{
-
     private MineField board;
     private Timer time;
     private HighScore highScore;
@@ -72,6 +71,7 @@ public class GameManager implements LevelConst{
         if (firstMove) {
             //init timer - turn on ticks
             time.setTimerOn(true);
+
             //turn off the first game move flag
             this.firstMove=false;
         }
@@ -98,7 +98,6 @@ public class GameManager implements LevelConst{
             if (board.getCell(row, col).getValue()==0) {
                 board.revealNeighbours(row, col);
             }
-
         }
         return true;
     }
@@ -122,5 +121,5 @@ public class GameManager implements LevelConst{
     //sets the game high score record - player name, ticks from the timer, and the level
     public void setHighScore(String playerName, Context context) {
         this.highScore= new HighScore(playerName,time.getTicks(),level,context);
-}
+    }
 }

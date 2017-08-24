@@ -1,16 +1,12 @@
 package com.example.liran.minesweeper;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import static com.example.liran.minesweeper.R.layout.activity_game;
-
 //Select Level Activity - UI for the player to pick his desired difficulty
 public class SelectLevelActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

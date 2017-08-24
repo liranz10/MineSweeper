@@ -1,37 +1,39 @@
 package com.example.liran.minesweeper;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
+// The main activity class (select play/ high score/ exit)
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
 
-        final Intent selectlevel = new Intent(this,SelectLevelActivity.class);
-        final Intent highscore = new Intent(this,HighScoreActivity.class);
+        final Intent selectLevel = new Intent(this,SelectLevelActivity.class);
+
+        final Intent highScore = new Intent(this,HighScoreActivity.class);
+
+        // move to select level activity
         findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(selectlevel);
-            }
-        });
-        findViewById(R.id.high_score).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(highscore);
+                startActivity(selectLevel);
             }
         });
 
+        // move to select high score activity
+        findViewById(R.id.high_score).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(highScore);
+            }
+        });
+
+        // exit the app
         findViewById(R.id.exit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,8 +41,5 @@ public class MainActivity extends AppCompatActivity {
                 System.exit(0);
             }
         });
-
-
-
     }
 }
