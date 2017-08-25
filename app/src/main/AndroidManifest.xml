@@ -9,16 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.liran.minesweeper.UI.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectLevelActivity" />
-        <activity android:name=".HighScoreActivity" />
-        <activity android:name=".GameActivity"></activity>
+        <activity android:name="com.example.liran.minesweeper.UI.SelectLevelActivity" />
+        <activity android:name="com.example.liran.minesweeper.UI.HighScoreActivity" />
+        <activity android:name="com.example.liran.minesweeper.UI.GameActivity"></activity>
     </application>
 
 </manifest>

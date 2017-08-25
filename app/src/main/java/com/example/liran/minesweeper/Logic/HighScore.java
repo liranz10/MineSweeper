@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.Logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
@@ -9,7 +9,7 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
 // High score class (create/save/load high scores)
-class HighScore {
+public class HighScore {
     private int highScoreCounter = 0;
     private String playerName;
     private int score;
@@ -31,7 +31,7 @@ class HighScore {
     }
 
     // load the high scores from shared preferences by GSON
-    static ArrayList<HighScore> load(Context context) {
+   public  static ArrayList<HighScore> load(Context context) {
         ArrayList<HighScore> table= new ArrayList<>();
         SharedPreferences sp = context.getSharedPreferences("HighScoreTable", MODE_PRIVATE);
         Map<String,?>  scores = sp.getAll();

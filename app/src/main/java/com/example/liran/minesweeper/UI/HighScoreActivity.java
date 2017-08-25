@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.UI;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,11 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.example.liran.minesweeper.Logic.*;
+import com.example.liran.minesweeper.Logic.LevelConst;
+import com.example.liran.minesweeper.R;
+
 import java.util.ArrayList;
 
 //High score table activity

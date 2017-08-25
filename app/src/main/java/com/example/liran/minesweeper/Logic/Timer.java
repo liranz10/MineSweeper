@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.Logic;
 
 //Game Time Class
 public class Timer{

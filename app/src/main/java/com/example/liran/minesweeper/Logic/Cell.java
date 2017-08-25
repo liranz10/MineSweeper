@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.Logic;
 
 // The cell class
 public class Cell {

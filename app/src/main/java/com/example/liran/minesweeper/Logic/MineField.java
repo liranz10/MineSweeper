@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.Logic;
 
 // Mine field class - the game board
 public class MineField {

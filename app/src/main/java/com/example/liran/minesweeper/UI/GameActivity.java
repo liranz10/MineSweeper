@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.UI;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +17,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.example.liran.minesweeper.Logic.Cell;
+import com.example.liran.minesweeper.Logic.GameManager;
+import com.example.liran.minesweeper.Logic.LevelConst;
+import com.example.liran.minesweeper.R;
+
 import static com.example.liran.minesweeper.R.id.grid;
 
 //Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
@@ -140,7 +146,7 @@ public class GameActivity extends AppCompatActivity {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
                 if (gameManager.getBoard().checkMine(row, column)) {
-                    buttons[row + column * colsNum].setPressed(false,true,false,Cell.MINE_VALUE,colsNum);
+                    buttons[row + column * colsNum].setPressed(false,true,false, Cell.MINE_VALUE,colsNum);
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.Logic;
 
 //Levels params constants
 public interface LevelConst {

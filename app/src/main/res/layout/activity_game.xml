@@ -10,7 +10,7 @@
     android:layoutDirection="ltr"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.example.liran.minesweeper.GameActivity">
+    tools:context="com.example.liran.minesweeper.com.example.liran.Logic.GameActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

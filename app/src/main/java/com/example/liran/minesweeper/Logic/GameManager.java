@@ -1,4 +1,4 @@
-package com.example.liran.minesweeper;
+package com.example.liran.minesweeper.Logic;
 import android.content.Context;
 
 //Game Manager Class, refers to all SINGLE game logic
