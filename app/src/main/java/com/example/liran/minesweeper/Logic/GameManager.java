@@ -118,8 +118,14 @@ public class GameManager implements LevelConst{
         return time;
     }
 
-    //sets the game high score record - player name, ticks from the timer, and the level
-    public void setHighScore(String playerName, Context context) {
-        this.highScore= new HighScore(playerName,time.getTicks(),level,context);
+    public HighScore getHighScore() {
+        return highScore;
     }
+
+    //sets the game high score record - player name, ticks from the timer, and the level
+    public void setHighScore(Context context) {
+        this.highScore= new HighScore(time.getTicks(),level,context);
+    }
+
+
 }

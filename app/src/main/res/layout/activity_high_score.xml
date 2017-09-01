@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,14 +23,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5sp"
-        >
+        android:padding="5sp">
 
         <RadioButton
-            android:layout_marginRight="10sp"
             android:id="@+id/easytable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10sp"
             android:buttonTint="#6aa84f"
             android:fontFamily="casual"
             android:text="@string/easy"
@@ -47,24 +47,26 @@
             android:textSize="20sp" />
 
         <RadioButton
-            android:layout_marginLeft="10sp"
             android:id="@+id/hardtable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10sp"
             android:buttonTint="#990000"
             android:fontFamily="casual"
             android:text="@string/hard"
             android:textColor="#990000"
             android:textSize="20sp" />
     </RadioGroup>
-
-
     <TableLayout
         android:id="@+id/scoretable"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="250sp"></TableLayout>
 
-    </TableLayout>
-
+    <fragment
+        android:id="@+id/map"
+        android:name="com.example.liran.minesweeper.UI.HighScoreActivity"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></fragment>
 
 </LinearLayout>

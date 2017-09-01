@@ -1,10 +1,15 @@
 package com.example.liran.minesweeper.UI;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
@@ -23,6 +28,7 @@ import com.example.liran.minesweeper.Logic.GameManager;
 import com.example.liran.minesweeper.Logic.LevelConst;
 import com.example.liran.minesweeper.R;
 
+import static android.R.id.input;
 import static com.example.liran.minesweeper.R.id.grid;
 
 //Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
@@ -33,6 +39,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView timeView;
     private Thread timerThread;
     private ImageButton smileButton;
+    private LocationManager locationManager;
+    private PlayerLocation playerLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +49,26 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         //create new grid layout for the game grid
-        setNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
+        setNewGrid(gameManager.getBoard().getRows(), gameManager.getBoard().getCols());
 
         //mine left view
-        mineLeft = (TextView)findViewById(R.id.mineNum);
-        mineLeft.setText(gameManager.getMineLeft()+"");
+        mineLeft = (TextView) findViewById(R.id.mineNum);
+        mineLeft.setText(gameManager.getMineLeft() + "");
 
         //time view
-        timeView=(TextView) findViewById(R.id.time);
+        timeView = (TextView) findViewById(R.id.time);
 
         //new game button
-        smileButton = (ImageButton)findViewById(R.id.smile);
+        smileButton = (ImageButton) findViewById(R.id.smile);
         newGameButton();
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        playerLocation = new PlayerLocation();
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, playerLocation);
+
+
+
     }
 
     @Override
@@ -73,9 +89,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setNewGrid(final int colsNum, int rowsNum) {
-        buttons = new  MineSweeperButton[rowsNum*colsNum];
+        buttons = new MineSweeperButton[rowsNum * colsNum];
         ViewGroup.LayoutParams gridLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        GridLayout gameGrid = (GridLayout)findViewById(grid);
+        GridLayout gameGrid = (GridLayout) findViewById(grid);
 
         //set new grid params
         gameGrid.removeAllViews();
@@ -85,14 +101,13 @@ public class GameActivity extends AppCompatActivity {
         // Programmatically create the buttons layout
         for (int row = 0; row < rowsNum; row++) {
             for (int column = 0; column < colsNum; column++) {
-                final MineSweeperButton btn = new MineSweeperButton(this,row,column);
+                final MineSweeperButton btn = new MineSweeperButton(this, row, column);
 
                 //small buttons for easy and medium level
                 if (rowsNum > LevelConst.HARD_ROWS) {
                     btn.setLayoutParams(new LinearLayout.LayoutParams(getResources().getInteger(R.integer.button_small_size), getResources().getInteger(R.integer.button_small_size)));
                     btn.setBackgroundResource(R.drawable.buttonshapesmall);
-                }
-                else{
+                } else {
                     btn.setLayoutParams(new LinearLayout.LayoutParams(getResources().getInteger(R.integer.button_big_size), getResources().getInteger(R.integer.button_big_size)));
                     btn.setBackgroundResource(R.drawable.buttonshape);
                 }
@@ -101,14 +116,14 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         // gets all status changes resolved by the game move
-                        boolean isMine = !gameManager.gameMove(btn.getRow(),btn.getCol(),getFlagStatus());
-                        boolean isFlagged = gameManager.getBoard().getCell(btn.getRow(),btn.getCol()).isFlagged();
-                        int cellValue = gameManager.getBoard().getCell(btn.getRow(),btn.getCol()).getValue();
-                        boolean removeFlag = gameManager.getBoard().getCell(btn.getRow(),btn.getCol()).isRemoveFlag();
+                        boolean isMine = !gameManager.gameMove(btn.getRow(), btn.getCol(), getFlagStatus());
+                        boolean isFlagged = gameManager.getBoard().getCell(btn.getRow(), btn.getCol()).isFlagged();
+                        int cellValue = gameManager.getBoard().getCell(btn.getRow(), btn.getCol()).getValue();
+                        boolean removeFlag = gameManager.getBoard().getCell(btn.getRow(), btn.getCol()).isRemoveFlag();
 
                         //view the changes on the game button
-                        btn.setPressed(isFlagged,isMine,removeFlag,cellValue,colsNum);
-                        if(isMine) {
+                        btn.setPressed(isFlagged, isMine, removeFlag, cellValue, colsNum);
+                        if (isMine) {
                             showAllMines(colsNum);
                             disableButtons(colsNum);
 
@@ -117,22 +132,24 @@ public class GameActivity extends AppCompatActivity {
 
                             //sets new game button to game over image
                             smileButton.setBackgroundResource(R.drawable.gameover);
-                        }
-                        else if (gameManager.isWinning()){
+                        } else if (gameManager.isWinning()) {
                             //stop timer
                             timerThread.interrupt();
 
                             //sets new game button to game win image
                             smileButton.setBackgroundResource(R.drawable.win);
-
-                            //enter name
-                            winDialog();
+                            disableButtons(colsNum);
+                            gameManager.setHighScore(GameActivity.this);
+                            if (gameManager.getHighScore().checkHighScore(GameActivity.this)) {
+                                //enter name
+                                winDialog();
+                            }
                         }
                         //show all revealed cells resulted from the click
                         showAllRevealed(colsNum);
 
                         //update mine left view
-                        mineLeft.setText(gameManager.getMineLeft()+"");
+                        mineLeft.setText(gameManager.getMineLeft() + "");
                     }
                 });
                 buttons[row + column * colsNum] = btn;
@@ -142,44 +159,44 @@ public class GameActivity extends AppCompatActivity {
     }
 
     //view all mines to player if player pressed mined cell
-    private void showAllMines(int colsNum){
+    private void showAllMines(int colsNum) {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
                 if (gameManager.getBoard().checkMine(row, column)) {
-                    buttons[row + column * colsNum].setPressed(false,true,false, Cell.MINE_VALUE,colsNum);
+                    buttons[row + column * colsNum].setPressed(false, true, false, Cell.MINE_VALUE, colsNum);
                 }
             }
         }
     }
 
     //view all revealed cells resulted from the last game move
-    private void showAllRevealed(int colsNum){
+    private void showAllRevealed(int colsNum) {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
                 if (!gameManager.getBoard().getCell(row, column).isCovered()) {
-                    buttons[row + column * colsNum].setPressed(false,false,false,gameManager.getBoard().getCell(row, column).getValue(),colsNum);
+                    buttons[row + column * colsNum].setPressed(false, false, false, gameManager.getBoard().getCell(row, column).getValue(), colsNum);
                 }
             }
         }
     }
 
     //get toggle button status - flag on/off
-    private boolean getFlagStatus(){
-        ToggleButton flagStatus = (ToggleButton)findViewById(R.id.toggleButton);
+    private boolean getFlagStatus() {
+        ToggleButton flagStatus = (ToggleButton) findViewById(R.id.toggleButton);
         return flagStatus.isChecked();
     }
 
     //disable al game grid buttons
-    private void disableButtons(int colsNum){
+    private void disableButtons(int colsNum) {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++)
-                    buttons[row + column * colsNum].setClickable(false);
-            }
+                buttons[row + column * colsNum].setClickable(false);
+        }
     }
 
     //start new game button on click
-    private void newGameButton(){
-        smileButton.setOnClickListener((new View.OnClickListener(){
+    private void newGameButton() {
+        smileButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //gets current game level
@@ -189,10 +206,10 @@ public class GameActivity extends AppCompatActivity {
                 gameManager = new GameManager(level);
 
                 //restart grid
-                setNewGrid(gameManager.getBoard().getRows(),gameManager.getBoard().getCols());
+                setNewGrid(gameManager.getBoard().getRows(), gameManager.getBoard().getCols());
 
                 //restart mine left view
-                mineLeft.setText(gameManager.getMineLeft()+"");
+                mineLeft.setText(gameManager.getMineLeft() + "");
 
                 //stop and start new timer
                 timerThread.interrupt();
@@ -246,7 +263,10 @@ public class GameActivity extends AppCompatActivity {
         builder.setPositiveButton(getString(R.string.win_dialog_positive_button), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                gameManager.setHighScore(input.getText().toString(),GameActivity.this);
+                gameManager.getHighScore().setPlayerName(input.getText().toString());
+                gameManager.getHighScore().setPlayerLocation(playerLocation.getCurrentLocation());
+                gameManager.getHighScore().save(GameActivity.this);
+
             }
         });
         builder.setNegativeButton(getString(R.string.win_dialog_negative_button), new DialogInterface.OnClickListener() {
@@ -258,104 +278,134 @@ public class GameActivity extends AppCompatActivity {
 
         builder.show();
     }
-}
+
 
     //Mine Sweeper Button inner class
-    class MineSweeperButton extends AppCompatButton{
-         private int row;
-         private int col;
-         private Typeface face;
+    class MineSweeperButton extends AppCompatButton {
+        private int row;
+        private int col;
+        private Typeface face;
 
-         public MineSweeperButton(Context context,int row,int col) {
-             super(context);
-             this.row=row;
-             this.col=col;
-             face = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.number_font));
-         }
+        public MineSweeperButton(Context context, int row, int col) {
+            super(context);
+            this.row = row;
+            this.col = col;
+            face = Typeface.createFromAsset(context.getAssets(), context.getString(R.string.number_font));
+        }
 
-         //set color by value
-         public void setButtonText(int value){
-             switch (value){
-                 case 1:
-                     this.setTextColor(Color.BLUE);
-                     break;
-                 case 2:
-                     this.setTextColor(Color.GREEN);
-                     break;
-                 case 3:
-                     this.setTextColor(Color.RED);
-                     break;
-                 case 4:
-                     this.setTextColor(Color.CYAN);
-                     break;
-                 case 5:
-                     this.setTextColor(Color.MAGENTA);
-                     break;
-                 case 6:
-                     this.setTextColor(Color.BLACK);
-                     break;
-                 case 7:
-                     this.setTextColor(Color.DKGRAY);
-                     break;
-                 case 8:
-                     this.setTextColor(Color.WHITE);
-                     break;
-             }
+        //set color by value
+        public void setButtonText(int value) {
+            switch (value) {
+                case 1:
+                    this.setTextColor(Color.BLUE);
+                    break;
+                case 2:
+                    this.setTextColor(Color.GREEN);
+                    break;
+                case 3:
+                    this.setTextColor(Color.RED);
+                    break;
+                case 4:
+                    this.setTextColor(Color.CYAN);
+                    break;
+                case 5:
+                    this.setTextColor(Color.MAGENTA);
+                    break;
+                case 6:
+                    this.setTextColor(Color.BLACK);
+                    break;
+                case 7:
+                    this.setTextColor(Color.DKGRAY);
+                    break;
+                case 8:
+                    this.setTextColor(Color.WHITE);
+                    break;
+            }
 
             if (value != 0)
-                this.setText(value+"");
+                this.setText(value + "");
 
-             //set font style
-             this.setTypeface(face);
-         }
+            //set font style
+            this.setTypeface(face);
+        }
 
-         //pressed button - changes the button view by the flags and params
-         //changes button status according to the grid(level) size
-         public void setPressed(boolean flag,boolean mine,boolean removeFlag,int value,int cols){
-             //flagged button
-             if (flag) {
-                 if (cols > LevelConst.HARD_ROWS)
-                     this.setBackgroundResource(R.drawable.buttonshapesmallflag);
-                 else
-                     this.setBackgroundResource(R.drawable.buttonflag);
-             }
+        //pressed button - changes the button view by the flags and params
+        //changes button status according to the grid(level) size
+        public void setPressed(boolean flag, boolean mine, boolean removeFlag, int value, int cols) {
+            //flagged button
+            if (flag) {
+                if (cols > LevelConst.HARD_ROWS)
+                    this.setBackgroundResource(R.drawable.buttonshapesmallflag);
+                else
+                    this.setBackgroundResource(R.drawable.buttonflag);
+            }
 
-             //mined button
-             else if(mine) {
-                 if(cols>LevelConst.HARD_ROWS)
-                 this.setBackgroundResource(R.drawable.buttonshapesmallmined);
-                 else
-                     this.setBackgroundResource(R.drawable.buttonmined);
-             }
+            //mined button
+            else if (mine) {
+                if (cols > LevelConst.HARD_ROWS)
+                    this.setBackgroundResource(R.drawable.buttonshapesmallmined);
+                else
+                    this.setBackgroundResource(R.drawable.buttonmined);
+            }
 
-             //remove flag from button
-             else if(removeFlag){
-                 if(cols>LevelConst.HARD_ROWS)
-                     this.setBackgroundResource(R.drawable.buttonshapesmall);
-                 else
-                     this.setBackgroundResource(R.drawable.buttonshape);
-             }
+            //remove flag from button
+            else if (removeFlag) {
+                if (cols > LevelConst.HARD_ROWS)
+                    this.setBackgroundResource(R.drawable.buttonshapesmall);
+                else
+                    this.setBackgroundResource(R.drawable.buttonshape);
+            }
 
-             //reveal button
-             else{
-                 if(cols>LevelConst.HARD_ROWS)
-                     this.setBackgroundResource(R.drawable.buttonshapesmallpressed);
-                 else
-                     this.setBackgroundResource(R.drawable.buttonpressed);
+            //reveal button
+            else {
+                if (cols > LevelConst.HARD_ROWS)
+                    this.setBackgroundResource(R.drawable.buttonshapesmallpressed);
+                else
+                    this.setBackgroundResource(R.drawable.buttonpressed);
 
-                 if (cols>LevelConst.HARD_ROWS)
-                     this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_small_font_size));
-                 else
-                     this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_big_font_size));
-                 setButtonText(value);
-             }
-         }
+                if (cols > LevelConst.HARD_ROWS)
+                    this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_small_font_size));
+                else
+                    this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_big_font_size));
+                setButtonText(value);
+            }
+        }
 
-         public int getRow() {
-             return row;
-         }
+        public int getRow() {
+            return row;
+        }
 
-         public int getCol() {
-             return col;
-         }
-     }
+        public int getCol() {
+            return col;
+        }
+    }
+
+    class PlayerLocation implements LocationListener{
+        Location currentLocation;
+
+        @Override
+        public void onLocationChanged(Location location) {
+            currentLocation=location;
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+
+        public Location getCurrentLocation() {
+            return currentLocation;
+        }
+    }
+
+}

@@ -1,7 +1,10 @@
 package com.example.liran.minesweeper.UI;
+import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -14,21 +17,31 @@ import android.widget.TextView;
 import com.example.liran.minesweeper.Logic.*;
 import com.example.liran.minesweeper.Logic.LevelConst;
 import com.example.liran.minesweeper.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 //High score table activity
-public class HighScoreActivity extends AppCompatActivity {
+public class HighScoreActivity extends FragmentActivity implements OnMapReadyCallback
+{
     private ArrayList<HighScore> scores;
     private RadioGroup radioGroup;
     private int checkedButton;
     private TableLayout tl;
-
+    private  MapFragment mapFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_high_score);
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         // load the score table from the shared preferences
         scores = HighScore.load(this);
@@ -129,5 +142,19 @@ public class HighScoreActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        LatLng sydney = new LatLng(-33.867, 151.206);
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        map.setMyLocationEnabled(true);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+
+        map.addMarker(new MarkerOptions()
+                .title("Sydney")
+                .snippet("The most populous city in Australia.")
+                .position(sydney));
     }
 }
