@@ -17,7 +17,7 @@ public class HighScore {
     private String playerName;
     private int score;
     private LevelConst.LEVEL level;
-    private PlayerLocation playerLocation;
+//    private PlayerLocation playerLocation;
 
     public HighScore(int score, LevelConst.LEVEL level,Context context) {
 
@@ -109,13 +109,13 @@ public class HighScore {
         this.playerName = playerName;
     }
 
-    public PlayerLocation getPlayerLocation() {
-        return playerLocation;
-    }
-
-    public void setPlayerLocation() {
-        this.playerLocation = new PlayerLocation();
-    }
+//    public PlayerLocation getPlayerLocation() {
+//        return playerLocation;
+//    }
+//
+//    public void setPlayerLocation() {
+//        this.playerLocation = new PlayerLocation();
+//    }
 
     // comparator to sort high score table (by score)
     public static Comparator<HighScore> getCompByScore(){

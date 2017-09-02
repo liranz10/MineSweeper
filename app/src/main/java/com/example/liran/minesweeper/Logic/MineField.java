@@ -72,6 +72,22 @@ public class MineField {
         }
     }
 
+    public void addMine() {
+        mineNum++;
+        int randomRow;
+        int randomCol;
+
+            randomRow =  (int) (Math.random() * rows);
+            randomCol =  (int) (Math.random() * cols);
+            if (!checkMine(randomRow,randomCol)) {
+                gameGrid[randomRow][randomCol].setMineValue();
+                adjustNeighboursValues(randomRow,randomCol);
+
+            }
+
+    }
+
+
     //adjusting mined cell neighbours values
     private void adjustNeighboursValues(int row, int col){
         int i=1, j=1;
@@ -135,5 +151,14 @@ public class MineField {
 
     public Cell getCell(int row, int col){
         return gameGrid[row][col];
+    }
+
+    public void update(){
+        for (int i=0 ; i < rows ; i++)
+            for (int j=0 ; j < cols ; j++){
+                gameGrid[i][j].setCovered(true);
+                gameGrid[i][j].setFlagged(false);
+                gameGrid[i][j].setRemoveFlag(false);
+            }
     }
 }

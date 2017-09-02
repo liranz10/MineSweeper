@@ -25,6 +25,9 @@ public class Cell {
         if(value!=MINE_VALUE)
             this.value++;
     }
+    public void setMineValue(){
+        this.value=MINE_VALUE;
+    }
 
     public boolean isFlagged() {
         return flagged;

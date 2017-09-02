@@ -1,17 +1,17 @@
 package com.example.liran.minesweeper.UI;
-import android.Manifest;
+
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
 import android.view.View;
@@ -21,25 +21,42 @@ import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
-import com.example.liran.minesweeper.Logic.PlayerLocation;
+
 import com.example.liran.minesweeper.Logic.Cell;
 import com.example.liran.minesweeper.Logic.GameManager;
 import com.example.liran.minesweeper.Logic.LevelConst;
 import com.example.liran.minesweeper.R;
 
-import static android.R.id.input;
+import java.util.Arrays;
+
 import static com.example.liran.minesweeper.R.id.grid;
 
 //Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements SensorService.SensorServiceListener {
     static GameManager gameManager;
     private MineSweeperButton[] buttons;
     private TextView mineLeft;
     private TextView timeView;
     private Thread timerThread;
     private ImageButton smileButton;
-    private LocationManager locationManager;
+    private float[] startValues;
+//    private LocationManager locationManager;
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            if (iBinder instanceof SensorService.SensorServiceBinder) {
+                SensorService.SensorServiceBinder sensorServiceBinder = (SensorService.SensorServiceBinder) iBinder;
+                sensorServiceBinder.setListener(GameActivity.this);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +77,9 @@ public class GameActivity extends AppCompatActivity {
         //new game button
         smileButton = (ImageButton) findViewById(R.id.smile);
         newGameButton();
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
+//        int permissionCheck = ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.ACCESS_FINE_LOCATION);
+//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 
     }
@@ -83,6 +99,20 @@ public class GameActivity extends AppCompatActivity {
 
         //stop timer
         timerThread.interrupt();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        bindService(new Intent(this ,SensorService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        unbindService(serviceConnection);
     }
 
     private void setNewGrid(final int colsNum, int rowsNum) {
@@ -136,12 +166,14 @@ public class GameActivity extends AppCompatActivity {
                             //sets new game button to game win image
                             smileButton.setBackgroundResource(R.drawable.win);
                             disableButtons(colsNum);
-                            gameManager.setHighScore(GameActivity.this);
-                            gameManager.getHighScore().setPlayerLocation();
-                            int permissionCheck = ContextCompat.checkSelfPermission(GameActivity.this,
-                                    Manifest.permission.ACCESS_FINE_LOCATION);
-                            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gameManager.getHighScore().getPlayerLocation());
 
+                            gameManager.setHighScore(GameActivity.this);
+//                            gameManager.getHighScore().setPlayerLocation();
+//
+//                            int permissionCheck = ContextCompat.checkSelfPermission(GameActivity.this,
+//                                    Manifest.permission.ACCESS_FINE_LOCATION);
+//                            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gameManager.getHighScore().getPlayerLocation());
+//
 
                             if (gameManager.getHighScore().checkHighScore(GameActivity.this)) {
                                 //enter name
@@ -268,9 +300,9 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 gameManager.getHighScore().setPlayerName(input.getText().toString());
                 gameManager.getHighScore().save(GameActivity.this);
-                if(gameManager.getHighScore().getPlayerLocation().getCurrentLocation()==null){
-
-                }
+//                if(gameManager.getHighScore().getPlayerLocation().getCurrentLocation()==null){
+//
+//                }
 
             }
         });
@@ -284,6 +316,43 @@ public class GameActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @Override
+    public void onSensorChanged(float[] values) {
+        if(startValues==null) {
+            startValues= new float[3];
+            startValues[0] = values[0];
+            startValues[1] = values[1];
+            startValues[2] = values[2];
+        }
+        float x=Math.abs(values[0]);
+        float y=Math.abs(values[1]);
+        float z=Math.abs(values[2]);
+        float sx=Math.abs(startValues[0]);
+        float sy=Math.abs(startValues[1]);
+        float sz=Math.abs(startValues[2]);
+        if(x > sx+8 || y > sy+8 || z > sz+8) // check const accuracy
+        {
+            gameManager.addMineToGame();
+            mineLeft.setText(gameManager.getMineLeft()+"");
+            updateGrid();
+        }
+        else
+            mineLeft.setText(gameManager.getMineLeft()+"");
+    }
+
+
+private void updateGrid() {
+    for(int i = 0 ; i < buttons.length ; i++)
+    if (gameManager.getBoard().getRows() > LevelConst.HARD_ROWS) {
+        buttons[i].setBackgroundResource(R.drawable.buttonshapesmall);
+        gameManager.updateBoard();
+        buttons[i].setText("");
+    } else {
+        buttons[i].setBackgroundResource(R.drawable.buttonshape);
+        gameManager.updateBoard();
+        buttons[i].setText("");
+    }
+    }
 
     //Mine Sweeper Button inner class
     class MineSweeperButton extends AppCompatButton {
@@ -372,6 +441,7 @@ public class GameActivity extends AppCompatActivity {
                     this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_small_font_size));
                 else
                     this.setTextSize(this.getContext().getResources().getInteger(R.integer.button_big_font_size));
+
                 setButtonText(value);
             }
         }
