@@ -167,6 +167,14 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         map.setMyLocationEnabled(true);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, currentLocation);
+            Thread.sleep(7000);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, currentLocation);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (currentLocation.getCurrentLocation() != null){
              permissionCheck = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION);

@@ -142,6 +142,7 @@ public class GameActivity extends AppCompatActivity {
                                     Manifest.permission.ACCESS_FINE_LOCATION);
                             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gameManager.getHighScore().getPlayerLocation());
 
+
                             if (gameManager.getHighScore().checkHighScore(GameActivity.this)) {
                                 //enter name
                                 winDialog();
@@ -250,7 +251,7 @@ public class GameActivity extends AppCompatActivity {
 
     //presents a win dialog to the player - enter name
     private void winDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("You Won!");
 
         // Set up the input
@@ -267,6 +268,9 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 gameManager.getHighScore().setPlayerName(input.getText().toString());
                 gameManager.getHighScore().save(GameActivity.this);
+                if(gameManager.getHighScore().getPlayerLocation().getCurrentLocation()==null){
+                    builder.setMessage("Can't Get Location");
+                }
 
             }
         });
@@ -381,34 +385,5 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    class PlayerLocation implements LocationListener {
-
-        private Location currentLocation ;
-
-
-        @Override
-        public void onLocationChanged(Location location) {
-            currentLocation=location;
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-        public Location getCurrentLocation() {
-            return currentLocation;
-        }
-    }
 
 }
