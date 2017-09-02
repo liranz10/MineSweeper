@@ -269,7 +269,7 @@ public class GameActivity extends AppCompatActivity {
                 gameManager.getHighScore().setPlayerName(input.getText().toString());
                 gameManager.getHighScore().save(GameActivity.this);
                 if(gameManager.getHighScore().getPlayerLocation().getCurrentLocation()==null){
-                    builder.setMessage("Can't Get Location");
+
                 }
 
             }

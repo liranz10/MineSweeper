@@ -24,12 +24,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.internal.IGoogleMapDelegate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import static android.R.attr.level;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static com.example.liran.minesweeper.R.id.map;
 import static com.example.liran.minesweeper.UI.GameActivity.gameManager;
 
 //High score table activity
@@ -42,11 +45,14 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
     private PlayerLocation currentLocation;
     private LocationManager locationManager;
     private GoogleMap map;
+    private int check;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+
         setContentView(R.layout.activity_high_score);
 
         currentLocation = new PlayerLocation();
@@ -54,11 +60,11 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
                 Manifest.permission.ACCESS_FINE_LOCATION);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, currentLocation);
-
-
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
 
         // load the score table from the shared preferences
@@ -78,18 +84,18 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
                     case 0:
                         tl.removeAllViews();
                         showTable(scores, LevelConst.LEVEL.EASY);
-                        shoePinsOnMap(LevelConst.LEVEL.EASY);
+                        check=0;
                         break;
                     case 1:
                         tl.removeAllViews();
                         showTable(scores, LevelConst.LEVEL.MEDIUM);
-                        shoePinsOnMap(LevelConst.LEVEL.MEDIUM);
+                        check=1;
 
                         break;
                     case 2:
                         tl.removeAllViews();
                         showTable(scores, LevelConst.LEVEL.HARD);
-                        shoePinsOnMap(LevelConst.LEVEL.HARD);
+                        check=2;
                         break;
                     default:
                         break;
@@ -98,19 +104,22 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
-    private void shoePinsOnMap(LevelConst.LEVEL level) {
+    private void showPinsOnMap(LevelConst.LEVEL level) {
         int rankVal = 1;
         LatLng current;
         for (HighScore e : scores) {
             /* Create a new row to be added. */
             if (e.getLevel() == level) {
                 if (rankVal <= getResources().getInteger(R.integer.table_size)) {
-                    current = new LatLng(e.getPlayerLocation().getCurrentLocation().getLatitude(), e.getPlayerLocation().getCurrentLocation().getLongitude());
-                    map.addMarker(new MarkerOptions()
-                            .title(rankVal+"")
-                            .snippet(e.getPlayerLocation().getCurrentLocation().toString())
-                            .position(current));
+                    if (e.getPlayerLocation().getCurrentLocation()!=null) {
+                        current = new LatLng(e.getPlayerLocation().getCurrentLocation().getLatitude(), e.getPlayerLocation().getCurrentLocation().getLongitude());
+                        map.addMarker(new MarkerOptions()
+                                .title(rankVal + "")
+                                .snippet(e.getPlayerLocation().getCurrentLocation().toString())
+                                .position(current));
+                    }
                     rankVal++;
+
                 }
             }
 
@@ -196,7 +205,24 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
             LatLng current = new LatLng(currentLocation.getCurrentLocation().getLatitude(), currentLocation.getCurrentLocation().getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 13));
         }
+        int rankVal = 1;
+        LatLng current;
+        for (HighScore e : scores) {
+            /* Create a new row to be added. */
+            if (e.getLevel() == LevelConst.LEVEL.EASY) {
+                if (rankVal <= getResources().getInteger(R.integer.table_size)) {
+                    if (e.getPlayerLocation().getCurrentLocation()!=null) {
+                        current = new LatLng(e.getPlayerLocation().getCurrentLocation().getLatitude(), e.getPlayerLocation().getCurrentLocation().getLongitude());
+                        map.addMarker(new MarkerOptions()
+                                .title(rankVal + "")
+                                .snippet("asd")
+                                .position(current));
+                    }
+                    rankVal++;
 
+                }
+            }
 
+        }
     }
 }
