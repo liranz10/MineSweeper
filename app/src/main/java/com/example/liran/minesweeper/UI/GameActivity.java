@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +20,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
+import com.example.liran.minesweeper.Logic.PlayerLocation;
 import com.example.liran.minesweeper.Logic.Cell;
 import com.example.liran.minesweeper.Logic.GameManager;
 import com.example.liran.minesweeper.Logic.LevelConst;
@@ -40,7 +38,6 @@ public class GameActivity extends AppCompatActivity {
     private Thread timerThread;
     private ImageButton smileButton;
     private LocationManager locationManager;
-    private PlayerLocation playerLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +61,6 @@ public class GameActivity extends AppCompatActivity {
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        playerLocation = new PlayerLocation();
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, playerLocation);
 
 
 
@@ -140,6 +135,11 @@ public class GameActivity extends AppCompatActivity {
                             smileButton.setBackgroundResource(R.drawable.win);
                             disableButtons(colsNum);
                             gameManager.setHighScore(GameActivity.this);
+                            gameManager.getHighScore().setPlayerLocation();
+                            int permissionCheck = ContextCompat.checkSelfPermission(GameActivity.this,
+                                    Manifest.permission.ACCESS_FINE_LOCATION);
+                            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, gameManager.getHighScore().getPlayerLocation());
+
                             if (gameManager.getHighScore().checkHighScore(GameActivity.this)) {
                                 //enter name
                                 winDialog();
@@ -264,7 +264,6 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 gameManager.getHighScore().setPlayerName(input.getText().toString());
-                gameManager.getHighScore().setPlayerLocation(playerLocation.getCurrentLocation());
                 gameManager.getHighScore().save(GameActivity.this);
 
             }
@@ -380,32 +379,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    class PlayerLocation implements LocationListener{
-        Location currentLocation;
 
-        @Override
-        public void onLocationChanged(Location location) {
-            currentLocation=location;
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-        public Location getCurrentLocation() {
-            return currentLocation;
-        }
-    }
 
 }
