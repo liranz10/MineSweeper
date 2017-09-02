@@ -1,4 +1,5 @@
 package com.example.liran.minesweeper.UI;
+
 import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -28,18 +29,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.example.liran.minesweeper.UI.GameActivity.gameManager;
 
 //High score table activity
-public class HighScoreActivity extends FragmentActivity implements OnMapReadyCallback
-{
+public class HighScoreActivity extends FragmentActivity implements OnMapReadyCallback {
     private ArrayList<HighScore> scores;
     private RadioGroup radioGroup;
     private int checkedButton;
     private TableLayout tl;
-    private  MapFragment mapFragment;
-    private  PlayerLocation currentLocation;
+    private MapFragment mapFragment;
+    private PlayerLocation currentLocation;
     private LocationManager locationManager;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,6 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
 
 
-
-
         // load the score table from the shared preferences
         scores = HighScore.load(this);
 
@@ -78,20 +78,43 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
                     case 0:
                         tl.removeAllViews();
                         showTable(scores, LevelConst.LEVEL.EASY);
+                        shoePinsOnMap(LevelConst.LEVEL.EASY);
                         break;
                     case 1:
                         tl.removeAllViews();
                         showTable(scores, LevelConst.LEVEL.MEDIUM);
+                        shoePinsOnMap(LevelConst.LEVEL.MEDIUM);
+
                         break;
                     case 2:
                         tl.removeAllViews();
                         showTable(scores, LevelConst.LEVEL.HARD);
+                        shoePinsOnMap(LevelConst.LEVEL.HARD);
                         break;
                     default:
                         break;
                 }
             }
         });
+    }
+
+    private void shoePinsOnMap(LevelConst.LEVEL level) {
+        int rankVal = 1;
+        LatLng current;
+        for (HighScore e : scores) {
+            /* Create a new row to be added. */
+            if (e.getLevel() == level) {
+                if (rankVal <= getResources().getInteger(R.integer.table_size)) {
+                    current = new LatLng(e.getPlayerLocation().getCurrentLocation().getLatitude(), e.getPlayerLocation().getCurrentLocation().getLongitude());
+                    map.addMarker(new MarkerOptions()
+                            .title(rankVal+"")
+                            .snippet(e.getPlayerLocation().getCurrentLocation().toString())
+                            .position(current));
+                    rankVal++;
+                }
+            }
+
+        }
     }
 
     private void showTable(ArrayList<HighScore> scores, LevelConst.LEVEL level) {
@@ -167,24 +190,13 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         map.setMyLocationEnabled(true);
-        try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, currentLocation);
-            Thread.sleep(7000);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, currentLocation);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (currentLocation.getCurrentLocation() != null){
-             permissionCheck = ContextCompat.checkSelfPermission(this,
+        if (currentLocation.getCurrentLocation() != null) {
+            permissionCheck = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION);
             LatLng current = new LatLng(currentLocation.getCurrentLocation().getLatitude(), currentLocation.getCurrentLocation().getLongitude());
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 13));
-    }
+        }
 
-//        map.addMarker(new MarkerOptions()
-//                .title("Sydney")
-//                .snippet("The most populous city in Australia.")
-//                .position(current));
+
     }
 }
