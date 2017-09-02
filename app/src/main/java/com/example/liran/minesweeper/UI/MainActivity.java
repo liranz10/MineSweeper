@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_main);
-        Stetho.initializeWithDefaults(this);
+//        Stetho.initializeWithDefaults(this);
         final Intent selectLevel = new Intent(this,SelectLevelActivity.class);
 
         final Intent highScore = new Intent(this,HighScoreActivity.class);

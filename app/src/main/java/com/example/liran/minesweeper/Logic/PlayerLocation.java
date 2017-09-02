@@ -6,7 +6,8 @@ import android.os.Bundle;
 
 public class PlayerLocation implements LocationListener {
 
-    private Location currentLocation;
+    private Location currentLocation ;
+
 
     @Override
     public void onLocationChanged(Location location) {
