@@ -334,6 +334,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         {
             gameManager.addMineToGame();
             mineLeft.setText(gameManager.getMineLeft()+"");
+            gameManager.updateBoard();
             updateGrid();
         }
         else
@@ -345,7 +346,6 @@ private void updateGrid() {
     for(int i = 0 ; i < buttons.length ; i++)
     if (gameManager.getBoard().getRows() > LevelConst.HARD_ROWS) {
         buttons[i].setBackgroundResource(R.drawable.buttonshapesmall);
-        gameManager.updateBoard();
         buttons[i].setText("");
     } else {
         buttons[i].setBackgroundResource(R.drawable.buttonshape);

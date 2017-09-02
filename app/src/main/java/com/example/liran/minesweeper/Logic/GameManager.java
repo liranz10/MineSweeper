@@ -102,8 +102,13 @@ public class GameManager implements LevelConst{
         return true;
     }
     public void addMineToGame(){
-        mineLeft=board.getMineNum();
-        board.addMine();
+        if(board.getMineNum()< board.getRows()*board.getCols()) {
+            mineLeft = board.getMineNum();
+            board.addMine();
+        }
+        else {
+           isGameOver=true;
+        }
     }
 
     public void updateBoard(){

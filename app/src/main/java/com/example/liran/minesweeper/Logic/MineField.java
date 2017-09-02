@@ -73,13 +73,14 @@ public class MineField {
     }
 
     public void addMine() {
-        mineNum++;
+
         int randomRow;
         int randomCol;
 
             randomRow =  (int) (Math.random() * rows);
             randomCol =  (int) (Math.random() * cols);
             if (!checkMine(randomRow,randomCol)) {
+                mineNum++;
                 gameGrid[randomRow][randomCol].setMineValue();
                 adjustNeighboursValues(randomRow,randomCol);
 
