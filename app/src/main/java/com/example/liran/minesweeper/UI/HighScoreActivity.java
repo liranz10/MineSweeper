@@ -135,15 +135,14 @@ public class HighScoreActivity extends FragmentActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+
+
 
     @Override
     protected void onStop() {
         super.onStop();
         currentLocation.removeUpdates();
+        finish();
     }
 
         private void showPinsOnMap(LevelConst.LEVEL level) {
@@ -156,7 +155,7 @@ public class HighScoreActivity extends FragmentActivity {
                     if (e.getPlayerLocation()!=null) {
                         current = new LatLng(e.getPlayerLocation().getLatitude(), e.getPlayerLocation().getLongitude());
                         map.addMarker(new MarkerOptions()
-                                .title("Rank:"+rankVal +" Name:"+e.getPlayerName()+"Score:"+e.getScore())
+                                .title("Rank: "+rankVal +" Time: "+e.getScore()+" Name: "+e.getPlayerName())
                                 .snippet(getStreetName(e.getPlayerLocation()))
                                 .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
                     }
