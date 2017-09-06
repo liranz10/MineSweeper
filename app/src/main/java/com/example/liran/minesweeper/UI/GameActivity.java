@@ -1,9 +1,5 @@
 package com.example.liran.minesweeper.UI;
 
-import android.Manifest;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,16 +13,9 @@ import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Transition;
-import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -100,9 +89,6 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         //new game button
         smileButton = (ImageButton) findViewById(R.id.smile);
         newGameButton();
-
-
-
 
     }
 
@@ -312,6 +298,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     private void winDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("You Won!");
+        final Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(GameActivity.this, R.anim.hyperspace_jump);
 
         // Set up the input
         final EditText input = new EditText(this);
@@ -327,7 +314,6 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
             public void onClick(DialogInterface dialog, int which) {
                 gameManager.getHighScore().setPlayerName(input.getText().toString());
                 gameManager.getHighScore().save(GameActivity.this);
-                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(GameActivity.this, R.anim.hyperspace_jump);
                 for (int i=0 ; i < buttons.length ; i++)
                     buttons[i].startAnimation(hyperspaceJumpAnimation);
 
@@ -337,6 +323,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                for (int i=0 ; i < buttons.length ; i++)
+                    buttons[i].startAnimation(hyperspaceJumpAnimation);
             }
         });
 
@@ -355,15 +343,6 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         if (gameManager.isWinning()){
             return;
         }
-        if(gameManager.isAllBoardIsMined()) {
-            showAllMines(gameManager.getBoard().getCols());
-            disableButtons(gameManager.getBoard().getCols());
-            //stop timer
-            timerThread.interrupt();
-            //sets new game button to game over image
-            smileButton.setBackgroundResource(R.drawable.gameover);
-            return;
-        }
 
         float x=Math.abs(values[0]);
         float y=Math.abs(values[1]);
@@ -371,13 +350,22 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         float sx=Math.abs(startValues[0]);
         float sy=Math.abs(startValues[1]);
         float sz=Math.abs(startValues[2]);
-        if(x > sx+8 || y > sy+8 || z > sz+8) // check const accuracy
+        if(x > sx+1 || y > sy+1 || z > sz+1) // check const accuracy
         {
 
             gameManager.addMineToGame();
             mineLeft.setText(gameManager.getMineLeft()+"");
             gameManager.updateBoard();
             updateGrid();
+
+            if(gameManager.isAllBoardIsMined()) {
+                showAllMines(gameManager.getBoard().getCols());
+                disableButtons(gameManager.getBoard().getCols());
+                //stop timer
+                timerThread.interrupt();
+                //sets new game button to game over image
+                smileButton.setBackgroundResource(R.drawable.gameover);
+            }
         }
         else
             mineLeft.setText(gameManager.getMineLeft()+"");
