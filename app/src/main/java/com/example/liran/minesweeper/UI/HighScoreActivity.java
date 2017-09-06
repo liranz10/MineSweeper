@@ -4,22 +4,30 @@ import android.Manifest;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.liran.minesweeper.Logic.*;
 import com.example.liran.minesweeper.Logic.LevelConst;
 import com.example.liran.minesweeper.R;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -42,9 +50,8 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
     private int checkedButton;
     private TableLayout tl;
     private MapFragment mapFragment;
-//    private PlayerLocation currentLocation;
-//    private LocationManager locationManager;
-//    private GoogleMap map;
+    private PlayerLocation currentLocation;
+    private GoogleMap map;
 //    private int check;
 
 
@@ -54,15 +61,26 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
         setContentView(R.layout.activity_high_score);
+        if (isGoogleMapsInstalled()) {
+            MapFragment mapFragment = (MapFragment) getFragmentManager()
+                    .findFragmentById(R.id.map);
 
-//        currentLocation = new PlayerLocation();
-//        int permissionCheck = ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION);
-//        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, currentLocation);
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    setGoogleMap(googleMap);
+                }
+            });
+        }
+         else {
+        // Notify the user he should install GoogleMaps (after installing Google Play Services)
+        FrameLayout mapsPlaceHolder = (FrameLayout) findViewById(R.id.mapPlaceHolder);
+        TextView errorMessageTextView = new TextView(getApplicationContext());
+        errorMessageTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        errorMessageTextView.setText(R.string.missing_google_maps_error_message);
+        errorMessageTextView.setTextColor(Color.RED);
+        mapsPlaceHolder.addView(errorMessageTextView);
+    }
 
 
 
@@ -100,7 +118,20 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
-//    private void showPinsOnMap(LevelConst.LEVEL level) {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentLocation = new PlayerLocation(this);
+
+
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        currentLocation.removeUpdates();
+    }
+
+    //    private void showPinsOnMap(LevelConst.LEVEL level) {
 //        int rankVal = 1;
 //        LatLng current;
 //        for (HighScore e : scores) {
@@ -204,5 +235,46 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
 
 
         }
+
+
+    public boolean isGoogleMapsInstalled() {
+        try {
+            ApplicationInfo info = getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0);
+            return info != null;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    public void setGoogleMap(GoogleMap googleMap) {
+        this.map = googleMap;
+        boolean isAllowedToUseLocation = hasPermissionForLocationServices();
+        if (isAllowedToUseLocation) {
+            try {
+                googleMap.setMyLocationEnabled(true);
+                LatLng current = new LatLng(currentLocation.getCurrentLocation().getLatitude(), currentLocation.getCurrentLocation().getLongitude());
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 13.5f));
+
+            } catch (SecurityException exception) {
+                Toast.makeText(this, "Error getting location", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Location is blocked in this app", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean hasPermissionForLocationServices() {
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            // Because the user's permissions started only from Android M and on...
+            return true;
+        }
+
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // The user blocked the location services of THIS app
+            return false;
+        }
+
+        return true;
+    }
 
 }

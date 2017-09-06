@@ -10,6 +10,7 @@ public class GameManager implements LevelConst{
     private boolean firstMove;
     private LEVEL level;
     private boolean isGameOver;
+    private boolean allBoardIsMined;
 
     //initialize game grid by level
     public GameManager(LEVEL level){
@@ -29,6 +30,7 @@ public class GameManager implements LevelConst{
         this.time=new Timer();
         this.firstMove=true;
         this.isGameOver = false;
+        this.allBoardIsMined=false;
     }
 
     //the game level enum
@@ -103,11 +105,11 @@ public class GameManager implements LevelConst{
     }
     public void addMineToGame(){
         if(board.getMineNum()< board.getRows()*board.getCols()) {
-            mineLeft = board.getMineNum();
             board.addMine();
+            mineLeft = board.getMineNum();
         }
-        else {
-           isGameOver=true;
+        else if((board.getMineNum()== board.getRows()*board.getCols())) {
+           this.allBoardIsMined=true;
         }
     }
 
@@ -140,5 +142,7 @@ public class GameManager implements LevelConst{
         this.highScore= new HighScore(time.getTicks(),level,context);
     }
 
-
+    public boolean isAllBoardIsMined() {
+        return allBoardIsMined;
+    }
 }

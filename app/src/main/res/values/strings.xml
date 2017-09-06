@@ -9,6 +9,7 @@
     <string name="win_dialog_hint">Enter Your Name</string>
     <string name="win_dialog_positive_button">OK</string>
     <string name="win_dialog_negative_button">Cancel</string>
+    <string name="missing_google_maps_error_message">Missing Google Maps Error Message</string>
     <integer name="button_small_size">100</integer>
     <integer name="button_big_size">170</integer>
     <integer name="button_big_font_size">24</integer>

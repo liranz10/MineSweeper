@@ -158,7 +158,6 @@ public class MineField {
         for (int i=0 ; i < rows ; i++)
             for (int j=0 ; j < cols ; j++){
                 gameGrid[i][j].setCovered(true);
-                gameGrid[i][j].setFlagged(false);
                 gameGrid[i][j].setRemoveFlag(false);
             }
     }
