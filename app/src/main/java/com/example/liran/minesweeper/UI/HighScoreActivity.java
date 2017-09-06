@@ -135,14 +135,15 @@ public class HighScoreActivity extends FragmentActivity {
         });
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
         currentLocation.removeUpdates();
-        finish();
     }
 
         private void showPinsOnMap(LevelConst.LEVEL level) {
