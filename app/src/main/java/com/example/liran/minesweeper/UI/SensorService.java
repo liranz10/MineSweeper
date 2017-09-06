@@ -28,6 +28,12 @@ public class SensorService extends Service implements SensorEventListener {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sensorManager.unregisterListener(this);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_UI);
 

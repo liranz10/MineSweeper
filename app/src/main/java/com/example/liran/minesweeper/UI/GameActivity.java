@@ -19,8 +19,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
+import android.transition.Explode;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -209,13 +212,31 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         try {
             Thread.sleep(500);
             ExplosionField explosionField = new ExplosionField(this);
-            for (int i = 0; i < buttons.length; i++) {
-                explosionField.explode(buttons[i]);
-            }
+//            for (int i = 0; i < buttons.length; i++) {
+//                explosionField.explode(buttons[i]);
+//            }
+            TransitionManager.beginDelayedTransition((GridLayout)findViewById(grid),makeExplodeTransition());
+            toggleVisibility(buttons);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    private void toggleVisibility(View... views){
+        // Loop through the views
+        for(View v: views){
+            if(v.getVisibility()==View.VISIBLE){
+                v.setVisibility(View.INVISIBLE);
+            }else {
+                v.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    private Explode makeExplodeTransition(){
+        Explode explode = new Explode();
+        explode.setDuration(3000);
+        explode.setInterpolator(new AnticipateOvershootInterpolator());
+        return explode;
     }
 
     //view all revealed cells resulted from the last game move

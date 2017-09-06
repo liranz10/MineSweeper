@@ -71,7 +71,7 @@ public class PlayerLocation implements LocationListener {
             }
 
             if (currentLocation == null) {
-                currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
 
 
