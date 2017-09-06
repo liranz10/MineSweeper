@@ -8,11 +8,15 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +37,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.internal.IGoogleMapDelegate;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static android.R.attr.level;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
@@ -44,7 +52,7 @@ import static com.example.liran.minesweeper.R.id.map;
 import static com.example.liran.minesweeper.UI.GameActivity.gameManager;
 
 //High score table activity
-public class HighScoreActivity extends FragmentActivity implements OnMapReadyCallback {
+public class HighScoreActivity extends FragmentActivity {
     private ArrayList<HighScore> scores;
     private RadioGroup radioGroup;
     private int checkedButton;
@@ -60,6 +68,7 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         currentLocation = new PlayerLocation(this);
+
         setContentView(R.layout.activity_high_score);
         if (isGoogleMapsInstalled()) {
             MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -69,6 +78,9 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
                     setGoogleMap(googleMap);
+                    radioGroup.check(R.id.easytable);
+                    showTable(scores, LevelConst.LEVEL.EASY);
+                    showPinsOnMap(LevelConst.LEVEL.EASY);
                 }
             });
         }
@@ -90,10 +102,9 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
 
         tl = (TableLayout) findViewById(R.id.scoretable);
         radioGroup = (RadioGroup) findViewById(R.id.group);
-
         //default radio button check easy table
-        radioGroup.check(R.id.easytable);
-        showTable(scores, LevelConst.LEVEL.EASY);
+
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -101,15 +112,21 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
                 switch (checkedButton) {
                     case 0:
                         tl.removeAllViews();
+                        map.clear();
                         showTable(scores, LevelConst.LEVEL.EASY);
+                        showPinsOnMap(LevelConst.LEVEL.EASY);
                         break;
                     case 1:
                         tl.removeAllViews();
+                        map.clear();
                         showTable(scores, LevelConst.LEVEL.MEDIUM);
+                        showPinsOnMap(LevelConst.LEVEL.MEDIUM);
                         break;
                     case 2:
                         tl.removeAllViews();
+                        map.clear();
                         showTable(scores, LevelConst.LEVEL.HARD);
+                        showPinsOnMap(LevelConst.LEVEL.HARD);
                         break;
                     default:
                         break;
@@ -129,27 +146,27 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         currentLocation.removeUpdates();
     }
 
-    //    private void showPinsOnMap(LevelConst.LEVEL level) {
-//        int rankVal = 1;
-//        LatLng current;
-//        for (HighScore e : scores) {
-//            /* Create a new row to be added. */
-//            if (e.getLevel() == level) {
-//                if (rankVal <= getResources().getInteger(R.integer.table_size)) {
-//                    if (e.getPlayerLocation().getCurrentLocation()!=null) {
-//                        current = new LatLng(e.getPlayerLocation().getCurrentLocation().getLatitude(), e.getPlayerLocation().getCurrentLocation().getLongitude());
-//                        map.addMarker(new MarkerOptions()
-//                                .title(rankVal + "")
-//                                .snippet(e.getPlayerLocation().getCurrentLocation().toString())
-//                                .position(current));
-//                    }
-//                    rankVal++;
-//
-//                }
-//            }
-//
-//        }
-//    }
+        private void showPinsOnMap(LevelConst.LEVEL level) {
+        int rankVal = 1;
+        LatLng current;
+        for (HighScore e : scores) {
+            /* Create a new row to be added. */
+            if (e.getLevel() == level) {
+                if (rankVal <= getResources().getInteger(R.integer.table_size)) {
+                    if (e.getPlayerLocation()!=null) {
+                        current = new LatLng(e.getPlayerLocation().getLatitude(), e.getPlayerLocation().getLongitude());
+                        map.addMarker(new MarkerOptions()
+                                .title("Rank:"+rankVal +" Name:"+e.getPlayerName()+"Score:"+e.getScore())
+                                .snippet(getStreetName(e.getPlayerLocation()))
+                                .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
+                    }
+                    rankVal++;
+
+                }
+            }
+
+        }
+    }
 
     private void showTable(ArrayList<HighScore> scores, LevelConst.LEVEL level) {
         int rankVal = 1;
@@ -219,20 +236,9 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        map.setMyLocationEnabled(true);
-//        if (currentLocation.getCurrentLocation() != null) {
-//            permissionCheck = ContextCompat.checkSelfPermission(this,
-//                    Manifest.permission.ACCESS_FINE_LOCATION);
-//            LatLng current = new LatLng(currentLocation.getCurrentLocation().getLatitude(), currentLocation.getCurrentLocation().getLongitude());
-//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 13));
-//        }
 
 
-        }
+
 
 
     public boolean isGoogleMapsInstalled() {
@@ -273,6 +279,23 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
         }
 
         return true;
+    }
+
+    private String getStreetName(Location location){
+        Geocoder geoCoder = new Geocoder(this);
+
+        List<Address> matches = null;
+        try {
+            matches = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
+            return bestMatch.getAddressLine(0);
+        } catch (IOException e) {
+           return "Cant Find Street Name";
+        }
+        catch (NullPointerException e){
+            return "Cant Find Street Name";
+        }
+
     }
 
 }
