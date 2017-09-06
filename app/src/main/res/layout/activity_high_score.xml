@@ -10,7 +10,7 @@
     android:layoutDirection="ltr"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.example.liran.minesweeper.com.example.liran.Logic.HighScoreActivity">
+    tools:context="com.example.liran.minesweeper.UI.HighScoreActivity">
 
     <ImageView
         android:layout_width="wrap_content"
