@@ -79,7 +79,6 @@ public class HighScoreActivity extends FragmentActivity {
                 public void onMapReady(GoogleMap googleMap) {
                     setGoogleMap(googleMap);
                     radioGroup.check(R.id.easytable);
-                    showTable(scores, LevelConst.LEVEL.EASY);
                     showPinsOnMap(LevelConst.LEVEL.EASY);
                 }
             });

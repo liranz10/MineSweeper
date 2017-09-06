@@ -37,6 +37,8 @@ import com.example.liran.minesweeper.R;
 
 import java.util.Arrays;
 
+import tyrantgit.explosionfield.ExplosionField;
+
 import static com.example.liran.minesweeper.R.id.grid;
 
 //Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
@@ -203,6 +205,16 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                     buttons[row + column * colsNum].setPressed(false, true, false, Cell.MINE_VALUE, colsNum);
                 }
             }
+        }
+        try {
+            Thread.sleep(500);
+            ExplosionField explosionField = new ExplosionField(this);
+            for (int i = 0; i < buttons.length; i++) {
+                explosionField.explode(buttons[i]);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
