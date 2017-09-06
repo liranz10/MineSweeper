@@ -268,6 +268,9 @@ public class HighScoreActivity extends FragmentActivity {
             } catch (SecurityException exception) {
                 Toast.makeText(this, "Error getting location", Toast.LENGTH_LONG).show();
             }
+            catch (NullPointerException exception) {
+                Toast.makeText(this, "Error getting location", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(this, "Location is blocked in this app", Toast.LENGTH_LONG).show();
         }
