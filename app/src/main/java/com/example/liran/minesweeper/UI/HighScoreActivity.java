@@ -253,7 +253,7 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
             try {
                 googleMap.setMyLocationEnabled(true);
                 LatLng current = new LatLng(currentLocation.getCurrentLocation().getLatitude(), currentLocation.getCurrentLocation().getLongitude());
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 13.5f));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 12.8f));
 
             } catch (SecurityException exception) {
                 Toast.makeText(this, "Error getting location", Toast.LENGTH_LONG).show();
