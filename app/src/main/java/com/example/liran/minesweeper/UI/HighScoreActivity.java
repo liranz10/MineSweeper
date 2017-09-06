@@ -59,7 +59,7 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
+        currentLocation = new PlayerLocation(this);
         setContentView(R.layout.activity_high_score);
         if (isGoogleMapsInstalled()) {
             MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -119,12 +119,10 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        currentLocation = new PlayerLocation(this);
-
-
+    protected void onDestroy() {
+        super.onDestroy();
     }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -253,7 +251,7 @@ public class HighScoreActivity extends FragmentActivity implements OnMapReadyCal
             try {
                 googleMap.setMyLocationEnabled(true);
                 LatLng current = new LatLng(currentLocation.getCurrentLocation().getLatitude(), currentLocation.getCurrentLocation().getLongitude());
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 12.8f));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(current, 15f));
 
             } catch (SecurityException exception) {
                 Toast.makeText(this, "Error getting location", Toast.LENGTH_LONG).show();
