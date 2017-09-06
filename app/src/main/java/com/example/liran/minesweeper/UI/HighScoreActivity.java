@@ -177,26 +177,26 @@ public class HighScoreActivity extends FragmentActivity {
         int rankVal = 1;
         Typeface face;
 
-//        // view for headline
-//        TableRow headlines = new TableRow(this);
-//
-//        //rank
-//        ImageView rankHeadline = new ImageView(this);
-//        rankHeadline.setImageResource(R.drawable.rank2);
-//
-//        //time
-//        ImageView timeHeadline = new ImageView(this);
-//        timeHeadline.setImageResource(R.drawable.time);
-//
-//        //name
-//        ImageView nameHeadline = new ImageView(this);
-//        nameHeadline.setImageResource(R.drawable.name);
-//
-//        //add the headlines to the view
-//        headlines.addView(rankHeadline);
-//        headlines.addView(timeHeadline);
-//        headlines.addView(nameHeadline);
-//        tl.addView(headlines, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        // view for headline
+        TableRow headlines = new TableRow(this);
+
+        //rank
+        ImageView rankHeadline = new ImageView(this);
+        rankHeadline.setImageResource(R.drawable.rank2);
+
+        //time
+        ImageView timeHeadline = new ImageView(this);
+        timeHeadline.setImageResource(R.drawable.time);
+
+        //name
+        ImageView nameHeadline = new ImageView(this);
+        nameHeadline.setImageResource(R.drawable.name);
+
+        //add the headlines to the view
+        headlines.addView(rankHeadline);
+        headlines.addView(timeHeadline);
+        headlines.addView(nameHeadline);
+        tl.addView(headlines, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
         //create the table
         for (HighScore e : scores) {

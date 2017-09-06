@@ -350,7 +350,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         float sx=Math.abs(startValues[0]);
         float sy=Math.abs(startValues[1]);
         float sz=Math.abs(startValues[2]);
-        if(x > sx+1 || y > sy+1 || z > sz+1) // check const accuracy
+        if(x > sx+8 || y > sy+8 || z > sz+8) // check const accuracy
         {
 
             gameManager.addMineToGame();
