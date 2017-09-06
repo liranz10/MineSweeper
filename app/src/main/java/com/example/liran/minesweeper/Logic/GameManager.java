@@ -108,9 +108,7 @@ public class GameManager implements LevelConst{
             board.addMine();
             mineLeft = board.getMineNum();
         }
-        else if((board.getMineNum()== board.getRows()*board.getCols())) {
-           this.allBoardIsMined=true;
-        }
+
     }
 
     public void updateBoard(){
@@ -143,6 +141,9 @@ public class GameManager implements LevelConst{
     }
 
     public boolean isAllBoardIsMined() {
-        return allBoardIsMined;
+        if((board.getMineNum()== board.getRows()*board.getCols())) {
+            this.allBoardIsMined=true;
+        };
+        return this.allBoardIsMined;
     }
 }
