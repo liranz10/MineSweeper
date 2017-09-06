@@ -187,7 +187,6 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                             smileButton.setBackgroundResource(R.drawable.win);
                             disableButtons(colsNum);
 
-                            Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(GameActivity.this, R.anim.hyperspace_jump);
 
 
                             gameManager.setHighScore(GameActivity.this);
@@ -197,8 +196,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                                 //enter name
                                 winDialog();
                             }
-                            for (int i=0 ; i < buttons.length ; i++)
-                                buttons[i].startAnimation(hyperspaceJumpAnimation);
+
                         }
                         //show all revealed cells resulted from the click
                         showAllRevealed(colsNum);
@@ -329,7 +327,9 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
             public void onClick(DialogInterface dialog, int which) {
                 gameManager.getHighScore().setPlayerName(input.getText().toString());
                 gameManager.getHighScore().save(GameActivity.this);
-
+                Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(GameActivity.this, R.anim.hyperspace_jump);
+                for (int i=0 ; i < buttons.length ; i++)
+                    buttons[i].startAnimation(hyperspaceJumpAnimation);
 
             }
         });
@@ -341,6 +341,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         });
 
         builder.show();
+
     }
 
     @Override
