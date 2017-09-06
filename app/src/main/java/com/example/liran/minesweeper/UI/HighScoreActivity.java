@@ -146,25 +146,31 @@ public class HighScoreActivity extends FragmentActivity {
     }
 
         private void showPinsOnMap(LevelConst.LEVEL level) {
-        int rankVal = 1;
-        LatLng current;
-        for (HighScore e : scores) {
+            try {
+
+
+                int rankVal = 1;
+                LatLng current;
+                for (HighScore e : scores) {
             /* Create a new row to be added. */
-            if (e.getLevel() == level) {
-                if (rankVal <= getResources().getInteger(R.integer.table_size)) {
-                    if (e.getPlayerLocation()!=null) {
-                        current = new LatLng(e.getPlayerLocation().getLatitude(), e.getPlayerLocation().getLongitude());
-                        map.addMarker(new MarkerOptions()
-                                .title("Rank: "+rankVal +" Time: "+e.getScore()+" Name: "+e.getPlayerName())
-                                .snippet(getStreetName(e.getPlayerLocation()))
-                                .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
+                    if (e.getLevel() == level) {
+                        if (rankVal <= getResources().getInteger(R.integer.table_size)) {
+                            if (e.getPlayerLocation() != null) {
+                                current = new LatLng(e.getPlayerLocation().getLatitude(), e.getPlayerLocation().getLongitude());
+                                map.addMarker(new MarkerOptions()
+                                        .title("Rank: " + rankVal + " Time: " + e.getScore() + " Name: " + e.getPlayerName())
+                                        .snippet(getStreetName(e.getPlayerLocation()))
+                                        .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
+                            }
+                            rankVal++;
+
+                        }
                     }
-                    rankVal++;
 
                 }
+            }catch (NullPointerException e){
+                return;
             }
-
-        }
     }
 
     private void showTable(ArrayList<HighScore> scores, LevelConst.LEVEL level) {
