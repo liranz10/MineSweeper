@@ -1,6 +1,9 @@
 package com.example.liran.minesweeper.UI;
 
 import android.Manifest;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,6 +12,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -19,8 +23,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -39,6 +51,7 @@ import java.util.Arrays;
 
 import tyrantgit.explosionfield.ExplosionField;
 
+import static android.R.transition.explode;
 import static com.example.liran.minesweeper.R.id.grid;
 
 //Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
@@ -51,7 +64,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     private ImageButton smileButton;
     private float[] startValues;
     private PlayerLocation playerLocation;
-
+    private GridLayout gameGrid;
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -127,18 +140,16 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     private void setNewGrid(final int colsNum, int rowsNum) {
         buttons = new MineSweeperButton[rowsNum * colsNum];
         ViewGroup.LayoutParams gridLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        GridLayout gameGrid = (GridLayout) findViewById(grid);
+         gameGrid = (GridLayout) findViewById(grid);
 
         //set new grid params
         gameGrid.removeAllViews();
         gameGrid.setColumnCount(colsNum);
         gameGrid.setRowCount(rowsNum);
-
         // Programmatically create the buttons layout
         for (int row = 0; row < rowsNum; row++) {
             for (int column = 0; column < colsNum; column++) {
                 final MineSweeperButton btn = new MineSweeperButton(this, row, column);
-
                 //small buttons for easy and medium level
                 if (rowsNum > LevelConst.HARD_ROWS) {
                     btn.setLayoutParams(new LinearLayout.LayoutParams(getResources().getInteger(R.integer.button_small_size), getResources().getInteger(R.integer.button_small_size)));
@@ -176,6 +187,9 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                             smileButton.setBackgroundResource(R.drawable.win);
                             disableButtons(colsNum);
 
+                            Animation hyperspaceJumpAnimation = AnimationUtils.loadAnimation(GameActivity.this, R.anim.hyperspace_jump);
+
+
                             gameManager.setHighScore(GameActivity.this);
                             gameManager.getHighScore().setPlayerLocation(playerLocation.getCurrentLocation());
 
@@ -183,6 +197,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                                 //enter name
                                 winDialog();
                             }
+                            for (int i=0 ; i < buttons.length ; i++)
+                                buttons[i].startAnimation(hyperspaceJumpAnimation);
                         }
                         //show all revealed cells resulted from the click
                         showAllRevealed(colsNum);
@@ -193,6 +209,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                 });
                 buttons[row + column * colsNum] = btn;
                 gameGrid.addView(btn);
+                gameGrid.showContextMenu();
             }
         }
     }
@@ -206,17 +223,14 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                 }
             }
         }
-        try {
-            Thread.sleep(500);
-            ExplosionField explosionField = new ExplosionField(this);
-            for (int i = 0; i < buttons.length; i++) {
-                explosionField.explode(buttons[i]);
-            }
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            ExplosionField explosionField = ExplosionField.attach2Window(this);
+            for (int i =0 ; i < buttons.length ; i++)
+                    explosionField.explode(buttons[i]);
+
     }
+
+
 
     //view all revealed cells resulted from the last game move
     private void showAllRevealed(int colsNum) {
@@ -255,7 +269,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                 gameManager = new GameManager(level);
 
                 //restart grid
-                setNewGrid(gameManager.getBoard().getRows(), gameManager.getBoard().getCols());
+
+                setNewGrid(gameManager.getBoard().getCols(),gameManager.getBoard().getRows());
 
                 //restart mine left view
                 mineLeft.setText(gameManager.getMineLeft() + "");

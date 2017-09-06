@@ -9,7 +9,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.example.liran.minesweeper.com.example.liran.Logic.SelectLevelActivity">
+    tools:context="com.example.liran.minesweeper.UI.SelectLevelActivity">
 
     <ImageView
         android:layout_width="336sp"
