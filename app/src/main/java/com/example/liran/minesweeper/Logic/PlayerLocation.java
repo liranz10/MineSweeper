@@ -2,21 +2,16 @@ package com.example.liran.minesweeper.Logic;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-
 import static android.content.Context.LOCATION_SERVICE;
 
 public class PlayerLocation implements LocationListener {
-
     private Location currentLocation ;
     private boolean didAlreadyRequestLocationPermission;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = -100;
@@ -36,19 +31,15 @@ public class PlayerLocation implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
-
 
     private void getCurrentLocation(Context context) {
         boolean isAccessGranted;
@@ -73,7 +64,6 @@ public class PlayerLocation implements LocationListener {
             if (currentLocation == null) {
                     currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
-
 
             if (isAccessGranted) {
                 float metersToUpdate = 1;
