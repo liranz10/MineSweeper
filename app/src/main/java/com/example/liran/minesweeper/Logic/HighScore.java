@@ -9,6 +9,10 @@ import java.util.Comparator;
 import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
+
+
+
+
 // High score class (create/save/load high scores)
 public class HighScore {
     private int highScoreCounter = 0;
