@@ -57,7 +57,6 @@ public class PlayerLocation implements LocationListener {
                     ((AppCompatActivity) context).requestPermissions(permissionsToAsk, LOCATION_PERMISSION_REQUEST_CODE);
                 }
             } else {
-                // Because the user's permissions started only from Android M and on...
                 isAccessGranted = true;
             }
 
