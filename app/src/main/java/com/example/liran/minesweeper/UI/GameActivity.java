@@ -175,6 +175,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
 
 
 
+
                             gameManager.setHighScore(GameActivity.this);
                             gameManager.getHighScore().setPlayerLocation(playerLocation.getCurrentLocation());
 
@@ -183,6 +184,10 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                                 winDialog();
                             }
 
+                        }
+                        else if (gameManager.isAllBoardIsMined()){
+                            showAllMines(colsNum);
+                            disableButtons(colsNum);
                         }
                         //show all revealed cells resulted from the click
                         showAllRevealed(colsNum);

@@ -2,14 +2,12 @@ package com.example.liran.minesweeper.Logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
-
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 // High score class (create/save/load high scores)
 public class HighScore {
