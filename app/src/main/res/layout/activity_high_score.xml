@@ -57,10 +57,11 @@
             android:textColor="#990000"
             android:textSize="20sp" />
     </RadioGroup>
+
     <ScrollView
     android:layout_width="wrap_content"
     android:layout_height="250sp"
-        android:fadeScrollbars="false">
+    android:fadeScrollbars="false">
     <TableLayout
         android:id="@+id/scoretable"
         android:layout_width="wrap_content"

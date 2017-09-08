@@ -50,7 +50,7 @@ public class HighScore {
 
 
     // load the high scores from shared preferences by GSON
-   public  static ArrayList<HighScore> load(Context context) {
+   public static ArrayList<HighScore> load(Context context) {
         ArrayList<HighScore> table= new ArrayList<>();
         SharedPreferences sp = context.getSharedPreferences("HighScoreTable", MODE_PRIVATE);
         Map<String,?>  scores = sp.getAll();
@@ -99,20 +99,20 @@ public class HighScore {
         return level;
     }
 
-    public int getHighScoreCounter() {
+    private int getHighScoreCounter() {
         return highScoreCounter;
     }
 
-    public void setHighScoreCounter(int highScoreCounter) {
+    public Location getPlayerLocation() {
+        return playerLocation;
+    }
+
+    private void setHighScoreCounter(int highScoreCounter) {
         this.highScoreCounter = highScoreCounter;
     }
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
-    }
-
-    public Location getPlayerLocation() {
-        return playerLocation;
     }
 
     public void setPlayerLocation(Location location) {

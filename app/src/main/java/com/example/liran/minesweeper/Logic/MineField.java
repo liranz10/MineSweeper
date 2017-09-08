@@ -72,6 +72,7 @@ public class MineField {
         }
     }
 
+    //add mine to mine field
     public void addMine() {
 
         int randomRow;
@@ -154,7 +155,8 @@ public class MineField {
         return gameGrid[row][col];
     }
 
-    public void update(){
+    //update Mine Field after adding mines
+    public void updateMineField(){
         for (int i=0 ; i < rows ; i++)
             for (int j=0 ; j < cols ; j++){
                 gameGrid[i][j].setCovered(true);

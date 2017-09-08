@@ -103,6 +103,8 @@ public class GameManager implements LevelConst{
         }
         return true;
     }
+
+    // add mine to the game board
     public void addMineToGame(){
         if(board.getMineNum()< board.getRows()*board.getCols()) {
             board.addMine();
@@ -110,9 +112,9 @@ public class GameManager implements LevelConst{
         }
 
     }
-
+    // update game board after adding mines
     public void updateBoard(){
-        board.update();
+        board.updateMineField();
     }
 
     public boolean isGameOver() {
@@ -139,7 +141,7 @@ public class GameManager implements LevelConst{
     public void setHighScore(Context context) {
         this.highScore= new HighScore(time.getTicks(),level,context);
     }
-
+    //check if board is all mined
     public boolean isAllBoardIsMined() {
         if((board.getMineNum()== board.getRows()*board.getCols())) {
             this.allBoardIsMined=true;

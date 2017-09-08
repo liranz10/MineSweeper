@@ -212,7 +212,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                 }
             }
         }
-
+            //explosion animation
             ExplosionField explosionField = ExplosionField.attach2Window(this);
             for (int i =0 ; i < buttons.length ; i++)
                     explosionField.explode(buttons[i]);
@@ -336,7 +336,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         builder.show();
 
     }
-
+    //motion sensor adds mines to grid
     @Override
     public void onSensorChanged(float[] values) {
         if(startValues==null) {
@@ -355,6 +355,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         float sx=Math.abs(startValues[0]);
         float sy=Math.abs(startValues[1]);
         float sz=Math.abs(startValues[2]);
+
         if(x > sx+8 || y > sy+8 || z > sz+8) // check const accuracy
         {
 
@@ -376,7 +377,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
             mineLeft.setText(gameManager.getMineLeft()+"");
     }
 
-
+//update grid changes after tilt was detected
 private void updateGrid() {
 
     for (int i = 0; i < buttons.length; i++)
@@ -403,6 +404,7 @@ private void updateGrid() {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
     //Mine Sweeper Button inner class
     class MineSweeperButton extends AppCompatButton {
         private int row;

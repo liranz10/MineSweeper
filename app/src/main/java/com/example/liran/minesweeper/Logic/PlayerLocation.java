@@ -22,6 +22,7 @@ public class PlayerLocation implements LocationListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = -100;
     private LocationManager locationManager;
 
+    //constructor
     public PlayerLocation(Context context) {
         didAlreadyRequestLocationPermission = false;
         locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
@@ -47,7 +48,6 @@ public class PlayerLocation implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
-
 
 
     private void getCurrentLocation(Context context) {
@@ -85,16 +85,6 @@ public class PlayerLocation implements LocationListener {
 
     public Location getCurrentLocation() {
         return currentLocation;
-    }
-
-    public boolean isDidAlreadyRequestLocationPermission() {
-        return didAlreadyRequestLocationPermission;
-    }
-
-
-
-    public LocationManager getLocationManager() {
-        return locationManager;
     }
 
     public void removeUpdates(){
