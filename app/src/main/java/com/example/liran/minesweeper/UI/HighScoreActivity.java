@@ -1,8 +1,4 @@
 package com.example.liran.minesweeper.UI;
-
-import android.Manifest;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -12,32 +8,28 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.liran.minesweeper.Logic.*;
+import com.example.liran.minesweeper.Logic.HighScore;
 import com.example.liran.minesweeper.Logic.LevelConst;
+import com.example.liran.minesweeper.Logic.PlayerLocation;
 import com.example.liran.minesweeper.R;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.internal.IGoogleMapDelegate;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -45,11 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
-import static android.R.attr.level;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static com.example.liran.minesweeper.R.id.map;
 import static com.example.liran.minesweeper.UI.GameActivity.gameManager;
 
 //High score table activity
@@ -61,8 +50,16 @@ public class HighScoreActivity extends FragmentActivity {
     private MapFragment mapFragment;
     private PlayerLocation currentLocation;
     private GoogleMap map;
-//    private int check;
+    class Tasker extends AsyncTask {
+    @Override
 
+    public Object doInBackground(Object[] params) {
+        scores = HighScore.load(HighScoreActivity.this);
+        return true;
+    }
+
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +95,15 @@ public class HighScoreActivity extends FragmentActivity {
 
 
         // load the score table from the shared preferences
-        scores = HighScore.load(this);
+        Tasker tasker = new Tasker();
+        tasker.execute();
+        try {
+            tasker.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
         tl = (TableLayout) findViewById(R.id.scoretable);
         radioGroup = (RadioGroup) findViewById(R.id.group);
@@ -157,10 +162,13 @@ public class HighScoreActivity extends FragmentActivity {
                     if (e.getLevel() == level) {
                         if (rankVal <= getResources().getInteger(R.integer.table_size)) {
                             if (e.getPlayerLocation() != null) {
-                                current = new LatLng(e.getPlayerLocation().getLatitude(), e.getPlayerLocation().getLongitude());
+                                current = e.getPlayerLocation();
+                                Location temp = new Location(LocationManager.GPS_PROVIDER);
+                                temp.setLatitude(e.getPlayerLocation().latitude);
+                                temp.setLongitude(e.getPlayerLocation().longitude);
                                 map.addMarker(new MarkerOptions()
                                         .title("Rank: " + rankVal + " Time: " + e.getScore() + " Name: " + e.getPlayerName())
-                                        .snippet(getStreetName(e.getPlayerLocation()))
+                                        .snippet(getStreetName(temp))
                                         .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
                             }
                             rankVal++;

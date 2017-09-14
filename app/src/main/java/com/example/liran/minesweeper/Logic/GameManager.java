@@ -1,8 +1,11 @@
 package com.example.liran.minesweeper.Logic;
 import android.content.Context;
+import android.os.AsyncTask;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 //Game Manager Class, refers to all SINGLE game logic
-public class GameManager implements LevelConst{
+public class GameManager extends AsyncTask implements LevelConst{
     private MineField board;
     private Timer time;
     private HighScore highScore;
@@ -70,6 +73,7 @@ public class GameManager implements LevelConst{
 
     // return false if game over
     public boolean gameMove(int row, int col, boolean flag){
+
         if (firstMove) {
             //init timer - turn on ticks
             time.setTimerOn(true);
@@ -147,5 +151,23 @@ public class GameManager implements LevelConst{
             this.allBoardIsMined=true;
         };
         return this.allBoardIsMined;
+    }
+
+    @Override
+    public Object doInBackground(Object[] params) {
+        if (params[0].equals("gameMove")){
+            return gameMove((int)params[1],(int)params[2],(boolean)params[3]);
+        }
+        else if(params[0].equals("isWinning")){
+            return isWinning();
+        }
+        else if(params[0].equals("checkAllRevealed")){
+            return checkAllRevealed();
+        }
+        else if(params[0].equals("addMineToGame")){
+             addMineToGame();
+        }
+        return true;
+
     }
 }

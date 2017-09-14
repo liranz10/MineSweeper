@@ -2,6 +2,9 @@ package com.example.liran.minesweeper.Logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.os.AsyncTask;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +13,12 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
 // High score class (create/save/load high scores)
-public class HighScore {
+public class HighScore{
     private int highScoreCounter = 0;
     private String playerName;
     private int score;
     private LevelConst.LEVEL level;
-    private Location playerLocation;
+    private LatLng playerLocation;
 
     public HighScore(int score, LevelConst.LEVEL level,Context context) {
 
@@ -99,7 +102,7 @@ public class HighScore {
         return highScoreCounter;
     }
 
-    public Location getPlayerLocation() {
+    public LatLng getPlayerLocation() {
         return playerLocation;
     }
 
@@ -112,7 +115,7 @@ public class HighScore {
     }
 
     public void setPlayerLocation(Location location) {
-        this.playerLocation = location;
+        this.playerLocation = new LatLng(location.getLatitude(),location.getLongitude());
     }
 
     // comparator to sort high score table (by score)
@@ -125,5 +128,6 @@ public class HighScore {
         };
         return comp;
     }
+
 
 }
