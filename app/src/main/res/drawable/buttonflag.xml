@@ -30,7 +30,9 @@
                 />
         </shape>
     </item>
-    <item android:drawable="@drawable/flagsmall"
+    <item android:drawable="@drawable/flag2"
+        android:height="30sp"
+        android:width="30sp"
         android:gravity="center" />
 
 

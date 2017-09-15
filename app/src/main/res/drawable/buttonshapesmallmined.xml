@@ -33,7 +33,7 @@
 
         </shape>
     </item>
-    <item android:drawable="@drawable/minesmall"
+    <item android:drawable="@drawable/menupic"
         android:height="20dp"
         android:width="20dp"
         android:gravity="center" />
