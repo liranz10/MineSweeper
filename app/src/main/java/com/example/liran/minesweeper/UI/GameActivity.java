@@ -25,15 +25,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import com.example.liran.minesweeper.Logic.Cell;
 import com.example.liran.minesweeper.Logic.GameManager;
 import com.example.liran.minesweeper.Logic.LevelConst;
 import com.example.liran.minesweeper.Logic.PlayerLocation;
 import com.example.liran.minesweeper.R;
-
 import tyrantgit.explosionfield.ExplosionField;
-
 import static com.example.liran.minesweeper.R.id.grid;
 
 //Game Activity class  - UI for the player (game board, time, mines number, flag on/off, new game button)
@@ -49,30 +46,30 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     private GridLayout gameGrid;
     private Object result;
     ExplosionField explosionField;
-    class Tasker extends AsyncTask {
+//    class Tasker extends AsyncTask {
+//
+//            @Override
+//
+//            public Object doInBackground(Object[] params) {
+//                if (params[0].equals("gameMove")){
+//                    result = gameManager.doInBackground(params);
+//                }
+//                else if(params[0].equals("isWinning")){
+//                    result = gameManager.doInBackground(params);
+//                }
+//                else if(params[0].equals("checkAllRevealed")){
+//                    result = gameManager.doInBackground(params);
+//                }
+//                else if(params[0].equals("addMineToGame")){
+//                    gameManager.doInBackground(params);
+//                }
+//                return true;
+//            }
+//
+//
+//    };
 
-            @Override
-
-            public Object doInBackground(Object[] params) {
-                if (params[0].equals("gameMove")){
-                    result = gameManager.doInBackground(params);
-                }
-                else if(params[0].equals("isWinning")){
-                    result = gameManager.doInBackground(params);
-                }
-                else if(params[0].equals("checkAllRevealed")){
-                    result = gameManager.doInBackground(params);
-                }
-                else if(params[0].equals("addMineToGame")){
-                    gameManager.doInBackground(params);
-                }
-                return true;
-            }
-
-
-    };
-
-
+    // create service connection
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -90,8 +87,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_game);
 
         //create new grid layout for the game grid
@@ -107,7 +104,6 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         //new game button
         smileButton = (ImageButton) findViewById(R.id.smile);
         newGameButton();
-
     }
 
     @Override
@@ -122,7 +118,9 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     @Override
     protected void onPause() {
         super.onPause();
+
         unbindService(serviceConnection);
+
         //stop timer
         timerThread.interrupt();
     }
@@ -130,13 +128,18 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     @Override
     protected void onStart() {
         super.onStart();
+
         playerLocation=new PlayerLocation(this);
         bindService(new Intent(this ,SensorService.class), serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    //
+    // Check: the same code in onStop and onDestroy!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //
     @Override
     protected void onStop() {
         super.onStop();
+
         timerThread.interrupt();
         playerLocation.removeUpdates();
     }
@@ -144,6 +147,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         timerThread.interrupt();
         playerLocation.removeUpdates();
     }
@@ -151,12 +155,13 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     private void setNewGrid(final int colsNum, int rowsNum) {
         buttons = new MineSweeperButton[rowsNum * colsNum];
         ViewGroup.LayoutParams gridLayoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-         gameGrid = (GridLayout) findViewById(grid);
+        gameGrid = (GridLayout) findViewById(grid);
 
         //set new grid params
         gameGrid.removeAllViews();
         gameGrid.setColumnCount(colsNum);
         gameGrid.setRowCount(rowsNum);
+
         // Programmatically create the buttons layout
         for (int row = 0; row < rowsNum; row++) {
             for (int column = 0; column < colsNum; column++) {
@@ -197,8 +202,10 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                             //sets new game button to game win image
                             smileButton.setBackgroundResource(R.drawable.win);
                             disableButtons(colsNum);
+
                             //Set new High Score
                             gameManager.setHighScore(GameActivity.this);
+
                             //get player location
                             gameManager.getHighScore().setPlayerLocation(playerLocation.getCurrentLocation());
 
@@ -206,12 +213,12 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                                 //enter name
                                 winDialog();
                             }
-
                         }
                         else if (gameManager.isAllBoardIsMined()){
                             showAllMines(colsNum);
                             disableButtons(colsNum);
                         }
+
                         //show all revealed cells resulted from the click
                         showAllRevealed(colsNum);
 
@@ -226,7 +233,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         }
     }
 
-    //view all mines to player if player pressed mined cell
+    //show all mines to the player if he pressed on mined cell
     private void showAllMines(int colsNum) {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
@@ -235,15 +242,12 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
                 }
             }
         }
-            //explosion animation
-                explosionField = ExplosionField.attach2Window(this);
-                    explosionField.explode(gameGrid);
-
+        //explosion animation
+        explosionField = ExplosionField.attach2Window(this);
+        explosionField.explode(gameGrid);
     }
 
-
-
-    //view all revealed cells resulted from the last game move
+    //show all revealed cells resulted from the last game move
     private void showAllRevealed(int colsNum) {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++) {
@@ -260,7 +264,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         return flagStatus.isChecked();
     }
 
-    //disable al game grid buttons
+    //disable all game grid buttons
     private void disableButtons(int colsNum) {
         for (int row = 0; row < gameManager.getBoard().getRows(); row++) {
             for (int column = 0; column < gameManager.getBoard().getCols(); column++)
@@ -358,8 +362,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         });
 
         builder.show();
-
     }
+
     //motion sensor adds mines to grid
     @Override
     public void onSensorChanged(float[] values) {
@@ -380,9 +384,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         float sy=Math.abs(startValues[1]);
         float sz=Math.abs(startValues[2]);
 
-        if(x > sx+8 || y > sy+8 || z > sz+8) // check const accuracy
+        if(x > sx+8 || y > sy+8 || z > sz+8) // Check const accuracy
         {
-
             gameManager.addMineToGame();
             mineLeft.setText(gameManager.getMineLeft()+"");
             gameManager.updateBoard();
@@ -391,8 +394,10 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
             if(gameManager.isAllBoardIsMined()) {
                 showAllMines(gameManager.getBoard().getCols());
                 disableButtons(gameManager.getBoard().getCols());
+
                 //stop timer
                 timerThread.interrupt();
+
                 //sets new game button to game over image
                 smileButton.setBackgroundResource(R.drawable.gameover);
             }
@@ -401,35 +406,31 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
             mineLeft.setText(gameManager.getMineLeft()+"");
     }
 
-//update grid changes after tilt was detected
-private void updateGrid() {
-
-    for (int i = 0; i < buttons.length; i++)
-        if (gameManager.getBoard().getRows() > LevelConst.HARD_ROWS) {
-            if (buttons[i].isFlag()) {
-                buttons[i].setBackgroundResource(R.drawable.buttonshapesmallflag);
-            } else {
-                buttons[i].setBackgroundResource(R.drawable.buttonshapesmall);
-                buttons[i].setText("");
+    //update grid changes after tilt was detected
+    private void updateGrid() {
+        for (int i = 0; i < buttons.length; i++)
+            if (gameManager.getBoard().getRows() > LevelConst.HARD_ROWS) {
+                if (buttons[i].isFlag()) {
+                    buttons[i].setBackgroundResource(R.drawable.buttonshapesmallflag);
+                } else {
+                    buttons[i].setBackgroundResource(R.drawable.buttonshapesmall);
+                    buttons[i].setText("");
+                }
             }
-        }
-        else {
-
-            if (buttons[i].isFlag()) {
-                buttons[i].setBackgroundResource(R.drawable.buttonflag);
-
-            } else {
-                buttons[i].setBackgroundResource(R.drawable.buttonshape);
-                buttons[i].setText("");
+            else {
+                if (buttons[i].isFlag()) {
+                    buttons[i].setBackgroundResource(R.drawable.buttonflag);
+                } else {
+                    buttons[i].setBackgroundResource(R.drawable.buttonshape);
+                    buttons[i].setText("");
+                }
             }
-        }
-}
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-
 
     //Mine Sweeper Button inner class
     class MineSweeperButton extends AppCompatButton {
@@ -539,6 +540,4 @@ private void updateGrid() {
             return flag;
         }
     }
-
-
 }

@@ -10,7 +10,6 @@ import android.os.Binder;
 import android.os.IBinder;
 
 public class SensorService extends Service implements SensorEventListener {
-
     interface SensorServiceListener {
         void onSensorChanged(float[] values);
     }
@@ -42,7 +41,7 @@ public class SensorService extends Service implements SensorEventListener {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        // Important to free redundant resources
+        // free redundant resources
         setSensorServiceListener(null);
         sensorManager.unregisterListener(this);
 
@@ -63,8 +62,6 @@ public class SensorService extends Service implements SensorEventListener {
     public void setSensorServiceListener(SensorServiceListener sensorServiceListener) {
         this.sensorServiceListener = sensorServiceListener;
     }
-
-
 
     class SensorServiceBinder extends Binder {
         void setListener(SensorServiceListener listener) {

@@ -33,13 +33,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import static com.example.liran.minesweeper.UI.GameActivity.gameManager;
 
 //High score table activity
 public class HighScoreActivity extends FragmentActivity {
@@ -47,23 +44,21 @@ public class HighScoreActivity extends FragmentActivity {
     private RadioGroup radioGroup;
     private int checkedButton;
     private TableLayout tl;
-    private MapFragment mapFragment;
+//    private MapFragment mapFragment;
     private PlayerLocation currentLocation;
     private GoogleMap map;
     class Tasker extends AsyncTask {
-    @Override
-
-    public Object doInBackground(Object[] params) {
-        scores = HighScore.load(HighScoreActivity.this);
-        return true;
+        @Override
+        public Object doInBackground(Object[] params) {
+            scores = HighScore.load(HighScoreActivity.this);
+            return true;
+        }
     }
-
-
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         currentLocation = new PlayerLocation(this);
 
@@ -81,18 +76,15 @@ public class HighScoreActivity extends FragmentActivity {
                 }
             });
         }
-         else {
-        // Notify the user he should install GoogleMaps (after installing Google Play Services)
-        FrameLayout mapsPlaceHolder = (FrameLayout) findViewById(R.id.mapPlaceHolder);
-        TextView errorMessageTextView = new TextView(getApplicationContext());
-        errorMessageTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
-        errorMessageTextView.setText(R.string.missing_google_maps_error_message);
-        errorMessageTextView.setTextColor(Color.RED);
-        mapsPlaceHolder.addView(errorMessageTextView);
-    }
-
-
-
+        else {
+            // Notify the user he should install GoogleMaps (after installing Google Play Services)
+            FrameLayout mapsPlaceHolder = (FrameLayout) findViewById(R.id.mapPlaceHolder);
+            TextView errorMessageTextView = new TextView(getApplicationContext());
+            errorMessageTextView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+            errorMessageTextView.setText(R.string.missing_google_maps_error_message);
+            errorMessageTextView.setTextColor(Color.RED);
+            mapsPlaceHolder.addView(errorMessageTextView);
+        }
 
         // load the score table from the shared preferences
         Tasker tasker = new Tasker();
@@ -107,9 +99,8 @@ public class HighScoreActivity extends FragmentActivity {
 
         tl = (TableLayout) findViewById(R.id.scoretable);
         radioGroup = (RadioGroup) findViewById(R.id.group);
+
         //default radio button check easy table
-
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -151,37 +142,34 @@ public class HighScoreActivity extends FragmentActivity {
         currentLocation.removeUpdates();
     }
 
-        private void showPinsOnMap(LevelConst.LEVEL level) {
-            try {
-
-
-                int rankVal = 1;
-                LatLng current;
-                for (HighScore e : scores) {
-            /* Create a new row to be added. */
-                    if (e.getLevel() == level) {
-                        if (rankVal <= getResources().getInteger(R.integer.table_size)) {
-                            if (e.getPlayerLocation() != null) {
-                                current = e.getPlayerLocation();
-                                Location temp = new Location(LocationManager.GPS_PROVIDER);
-                                temp.setLatitude(e.getPlayerLocation().latitude);
-                                temp.setLongitude(e.getPlayerLocation().longitude);
-                                map.addMarker(new MarkerOptions()
-                                        .title("Rank: " + rankVal + " Time: " + e.getScore() + " Name: " + e.getPlayerName())
-                                        .snippet(getStreetName(temp))
-                                        .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
-                            }
-                            rankVal++;
-
+    private void showPinsOnMap(LevelConst.LEVEL level) {
+        try {
+            int rankVal = 1;
+            LatLng current;
+            for (HighScore e : scores) {
+                /* Create a new row to be added. */
+                if (e.getLevel() == level) {
+                    if (rankVal <= getResources().getInteger(R.integer.table_size)) {
+                        if (e.getPlayerLocation() != null) {
+                            current = e.getPlayerLocation();
+                            Location temp = new Location(LocationManager.GPS_PROVIDER);
+                            temp.setLatitude(e.getPlayerLocation().latitude);
+                            temp.setLongitude(e.getPlayerLocation().longitude);
+                            map.addMarker(new MarkerOptions()
+                                    .title("Rank: " + rankVal + " Time: " + e.getScore() + " Name: " + e.getPlayerName())
+                                    .snippet(getStreetName(temp))
+                                    .position(current)).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.trophy));
                         }
+                        rankVal++;
                     }
-
                 }
-            }catch (NullPointerException e){
-                return;
             }
+        }catch (NullPointerException e){
+            return;
+        }
     }
 
+    // Show high score table
     private void showTable(ArrayList<HighScore> scores, LevelConst.LEVEL level) {
         int rankVal = 1;
         Typeface face;
@@ -250,11 +238,6 @@ public class HighScoreActivity extends FragmentActivity {
         }
     }
 
-
-
-
-
-
     public boolean isGoogleMapsInstalled() {
         try {
             ApplicationInfo info = getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0);
@@ -300,7 +283,6 @@ public class HighScoreActivity extends FragmentActivity {
 
     private String getStreetName(Location location){
         Geocoder geoCoder = new Geocoder(this);
-
         List<Address> matches = null;
         try {
             matches = geoCoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -312,7 +294,5 @@ public class HighScoreActivity extends FragmentActivity {
         catch (NullPointerException e){
             return "Cant Find Street Name";
         }
-
     }
-
 }

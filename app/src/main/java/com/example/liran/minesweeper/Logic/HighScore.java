@@ -2,8 +2,6 @@ package com.example.liran.minesweeper.Logic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.AsyncTask;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import java.util.ArrayList;
@@ -21,11 +19,9 @@ public class HighScore{
     private LatLng playerLocation;
 
     public HighScore(int score, LevelConst.LEVEL level,Context context) {
-
         this.score = score;
         this.level=level;
         this.highScoreCounter = load(context).size();
-
     }
 
     // save the high score to shared preferences by GSON
@@ -41,12 +37,12 @@ public class HighScore{
         }
     }
 
+    // load counter from shared preferences by GSON
     private int loadCounter(Context context) {
         SharedPreferences sp = context.getSharedPreferences("HighScoreCounters", MODE_PRIVATE);
         SharedPreferences.Editor editor = context.getSharedPreferences("HighScoreCounters", MODE_PRIVATE).edit();
         return sp.getInt(this.getLevel().toString(),0);
     }
-
 
     // load the high scores from shared preferences by GSON
    public static ArrayList<HighScore> load(Context context) {
@@ -115,7 +111,10 @@ public class HighScore{
     }
 
     public void setPlayerLocation(Location location) {
-        this.playerLocation = new LatLng(location.getLatitude(),location.getLongitude());
+        try {
+            this.playerLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        }catch (NullPointerException e){
+        }
     }
 
     // comparator to sort high score table (by score)
@@ -128,6 +127,4 @@ public class HighScore{
         };
         return comp;
     }
-
-
 }

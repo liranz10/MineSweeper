@@ -4,7 +4,6 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
 import com.example.liran.minesweeper.Logic.GameManager;
 import com.example.liran.minesweeper.Logic.LevelConst;
 import com.example.liran.minesweeper.R;
@@ -14,9 +13,9 @@ public class SelectLevelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         setContentView(R.layout.activity_select_level);
-
         final Intent game = new Intent(this, GameActivity.class);
 
         //initialize new single game(game manager - logic) by the selected difficulty  and starts the game activity

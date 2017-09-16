@@ -6,7 +6,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
 import com.example.liran.minesweeper.R;
 import com.facebook.stetho.Stetho;
 
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
+
         // move to select level activity
         findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,5 +52,4 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }

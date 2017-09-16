@@ -2,8 +2,6 @@ package com.example.liran.minesweeper.Logic;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-
 //Game Manager Class, refers to all SINGLE game logic
 public class GameManager extends AsyncTask implements LevelConst{
     private MineField board;
@@ -89,7 +87,7 @@ public class GameManager extends AsyncTask implements LevelConst{
             }
         }
         else{
-                if (board.getCell(row, col).isFlagged()) {
+            if (board.getCell(row, col).isFlagged()) {
                     board.getCell(row, col).setRemoveFlag(true);
                     board.flag(row, col, false);
                     mineLeft++;
@@ -114,8 +112,8 @@ public class GameManager extends AsyncTask implements LevelConst{
             board.addMine();
             mineLeft = board.getMineNum();
         }
-
     }
+
     // update game board after adding mines
     public void updateBoard(){
         board.updateMineField();
@@ -145,11 +143,12 @@ public class GameManager extends AsyncTask implements LevelConst{
     public void setHighScore(Context context) {
         this.highScore= new HighScore(time.getTicks(),level,context);
     }
+
     //check if board is all mined
     public boolean isAllBoardIsMined() {
         if((board.getMineNum()== board.getRows()*board.getCols())) {
             this.allBoardIsMined=true;
-        };
+        }
         return this.allBoardIsMined;
     }
 
@@ -168,6 +167,5 @@ public class GameManager extends AsyncTask implements LevelConst{
              addMineToGame();
         }
         return true;
-
     }
 }

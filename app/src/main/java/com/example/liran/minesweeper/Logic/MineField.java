@@ -35,7 +35,7 @@ public class MineField {
         gameGrid[row][col].setCovered(false);
     }
 
-    //flag the cell
+    //flaged the cell
     public void flag(int row, int col,boolean on_off)
     {
         gameGrid[row][col].setFlagged(on_off);
@@ -74,21 +74,16 @@ public class MineField {
 
     //add mine to mine field
     public void addMine() {
-
         int randomRow;
         int randomCol;
-
-            randomRow =  (int) (Math.random() * rows);
-            randomCol =  (int) (Math.random() * cols);
-            if (!checkMine(randomRow,randomCol)) {
-                mineNum++;
-                gameGrid[randomRow][randomCol].setMineValue();
-                adjustNeighboursValues(randomRow,randomCol);
-
-            }
-
+        randomRow =  (int) (Math.random() * rows);
+        randomCol =  (int) (Math.random() * cols);
+        if (!checkMine(randomRow,randomCol)) {
+            mineNum++;
+            gameGrid[randomRow][randomCol].setMineValue();
+            adjustNeighboursValues(randomRow,randomCol);
+        }
     }
-
 
     //adjusting mined cell neighbours values
     private void adjustNeighboursValues(int row, int col){
@@ -129,7 +124,7 @@ public class MineField {
         }
     }
 
-    //recursive function to reveal the neighbours of cell that was pressed
+    //recursive function to reveal the neighbours of cell that were pressed
     public void revealNeighbours(int row, int col) {
         int minX = (row <= 0 ? 0 : row - 1);
         int minY = (col <= 0 ? 0 : col - 1);

@@ -17,7 +17,6 @@ public class PlayerLocation implements LocationListener {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = -100;
     private LocationManager locationManager;
 
-    //constructor
     public PlayerLocation(Context context) {
         didAlreadyRequestLocationPermission = false;
         locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
@@ -41,6 +40,7 @@ public class PlayerLocation implements LocationListener {
     public void onProviderDisabled(String provider) {
     }
 
+    // get current location by permission
     private void getCurrentLocation(Context context) {
         boolean isAccessGranted;
 
@@ -61,7 +61,7 @@ public class PlayerLocation implements LocationListener {
             }
 
             if (currentLocation == null) {
-                    currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                currentLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
 
             if (isAccessGranted) {
