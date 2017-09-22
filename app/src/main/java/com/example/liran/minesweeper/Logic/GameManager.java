@@ -3,7 +3,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 //Game Manager Class, refers to all SINGLE game logic
-public class GameManager extends AsyncTask implements LevelConst{
+public class GameManager implements LevelConst{
     private MineField board;
     private Timer time;
     private HighScore highScore;
@@ -152,20 +152,5 @@ public class GameManager extends AsyncTask implements LevelConst{
         return this.allBoardIsMined;
     }
 
-    @Override
-    public Object doInBackground(Object[] params) {
-        if (params[0].equals("gameMove")){
-            return gameMove((int)params[1],(int)params[2],(boolean)params[3]);
-        }
-        else if(params[0].equals("isWinning")){
-            return isWinning();
-        }
-        else if(params[0].equals("checkAllRevealed")){
-            return checkAllRevealed();
-        }
-        else if(params[0].equals("addMineToGame")){
-             addMineToGame();
-        }
-        return true;
-    }
+
 }

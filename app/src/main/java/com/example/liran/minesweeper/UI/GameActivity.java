@@ -44,30 +44,8 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     private float[] startValues;
     private PlayerLocation playerLocation;
     private GridLayout gameGrid;
-    private Object result;
     ExplosionField explosionField;
-//    class Tasker extends AsyncTask {
-//
-//            @Override
-//
-//            public Object doInBackground(Object[] params) {
-//                if (params[0].equals("gameMove")){
-//                    result = gameManager.doInBackground(params);
-//                }
-//                else if(params[0].equals("isWinning")){
-//                    result = gameManager.doInBackground(params);
-//                }
-//                else if(params[0].equals("checkAllRevealed")){
-//                    result = gameManager.doInBackground(params);
-//                }
-//                else if(params[0].equals("addMineToGame")){
-//                    gameManager.doInBackground(params);
-//                }
-//                return true;
-//            }
-//
-//
-//    };
+    private static final int DIFF=8;
 
     // create service connection
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -133,13 +111,10 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         bindService(new Intent(this ,SensorService.class), serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    //
-    // Check: the same code in onStop and onDestroy!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    //
+
     @Override
     protected void onStop() {
         super.onStop();
-
         timerThread.interrupt();
         playerLocation.removeUpdates();
     }
@@ -147,7 +122,6 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         timerThread.interrupt();
         playerLocation.removeUpdates();
     }
@@ -384,7 +358,7 @@ public class GameActivity extends AppCompatActivity implements SensorService.Sen
         float sy=Math.abs(startValues[1]);
         float sz=Math.abs(startValues[2]);
 
-        if(x > sx+8 || y > sy+8 || z > sz+8) // Check const accuracy
+        if(x > sx + DIFF || y > sy + DIFF || z > sz + DIFF)
         {
             gameManager.addMineToGame();
             mineLeft.setText(gameManager.getMineLeft()+"");

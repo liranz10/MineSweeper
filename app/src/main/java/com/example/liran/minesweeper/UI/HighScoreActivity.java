@@ -47,7 +47,7 @@ public class HighScoreActivity extends FragmentActivity {
 //    private MapFragment mapFragment;
     private PlayerLocation currentLocation;
     private GoogleMap map;
-    class Tasker extends AsyncTask {
+    class HighScoreLoader extends AsyncTask {
         @Override
         public Object doInBackground(Object[] params) {
             scores = HighScore.load(HighScoreActivity.this);
@@ -86,11 +86,11 @@ public class HighScoreActivity extends FragmentActivity {
             mapsPlaceHolder.addView(errorMessageTextView);
         }
 
-        // load the score table from the shared preferences
-        Tasker tasker = new Tasker();
-        tasker.execute();
+        // load the score table from the shared preferences, onsse
+        HighScoreLoader loader = new HighScoreLoader();
+        loader.execute();
         try {
-            tasker.get();
+            loader.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
